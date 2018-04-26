@@ -229,7 +229,13 @@ def save_game():
         with open(m_SolutionFile, "w") as f:
             f.write(m_CurrentSolution or "")
         with open(m_TurnsFile, "w") as f:
-            f.write(str(m_turns))
+            if m_GameRunning:
+                if ScriptSettings.end_after_x_turns:
+                    f.write(str(m_turns) + "/" + str(int(ScriptSettings.nb_turns)))
+                else:
+                    f.write(str(m_turns))
+            else:
+                f.write("")
     except:
         Parent.Log(ScriptName, "Failed to save the current game")
     return
@@ -243,7 +249,11 @@ def load_game():
         with open(m_WordFile, "r") as f:
             m_CurrentWord = f.read()
         with open(m_TurnsFile, 'r') as f:
-            m_turns = int(f.read())
+            var = f.read()
+            if len(var) > 0:
+                m_turns = int(var.split("/")[0])
+            else:
+                m_turns = 0
         if len(m_CurrentSolution) == 0:
             m_CurrentWord = None
             m_CurrentSolution = None
