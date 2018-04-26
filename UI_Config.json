@@ -1,0 +1,169 @@
+{
+  "output_file": "hangmanSettings.json",
+  "api_key": {
+    "type": "textbox",
+    "value": "Your key here",
+    "label": "wordnik api-key",
+    "tooltip": "get your api key at http://developer.wordnik.com/",
+    "group": "wordnik api config"
+  },
+  "use_different_guess_command": {
+    "type": "checkbox",
+    "value": false,
+    "label": "different guess commands",
+    "tooltip": "use different commands for guess & guess word?",
+    "group": "config"
+  },
+  "start_game_permission": {
+    "type": "dropdown",
+    "value": "Moderator",
+    "label": "start game permission",
+    "tooltip": "who can start a game?",
+    "group": "config",
+    "items": [
+      "Everyone",
+      "Regular",
+      "Subscriber",
+      "GameWisp_Subscriber",
+      "User_Specific",
+      "Min_Rank",
+      "Min_Points",
+      "Min_Hours",
+      "Moderator",
+      "Editor",
+      "Caster"
+    ]
+  },
+  "start_game_info": {
+    "type": "textbox",
+    "value": "",
+    "label": "start game permission info",
+    "tooltip": "extra info, eg: 10 (for Min_Hours) or: Rank1 (for Min_Rank)",
+    "group": "config"
+  },
+  "min_word_length":{
+    "type":"slider",
+    "label":"min word length",
+    "value": 3,
+    "min": 1,
+    "max": 15,
+    "ticks":1,
+    "tooltip":"how long should a random word at least be",
+    "group":"config"
+  },
+  "send_message_if_not_enough_points":{
+    "type": "checkbox",
+    "value": true,
+    "label": "send warning",
+    "tooltip": "send message if not enough currency points",
+    "group": "config"
+  },
+  "send_progress_after_guess":{
+    "type": "checkbox",
+    "value": true,
+    "label": "send progress",
+    "tooltip": "send progress after each guess (disable when you want to show it on stream)",
+    "group": "config"
+  },
+  "global_cd": {
+    "type": "numberbox",
+    "value": 5,
+    "label": "global cooldown",
+    "tooltip": "global cooldown for making guesses",
+    "group": "gameplay"
+  },
+  "user_cd": {
+    "type": "numberbox",
+    "label": "user cooldown",
+    "value": 15,
+    "tooltip": "individual cooldown for making guesses",
+    "group": "gameplay"
+  },
+  "end_after_x_turns":{
+    "type": "checkbox",
+    "value":false,
+    "label":"and after x turns?",
+    "tooltip":"should the amount of guesses be limited or not?",
+    "group":"gameplay"
+  },
+  "nb_turns":{
+    "type":"slider",
+    "label":"max_nb_turns",
+    "value": 7,
+    "min": 1,
+    "max": 30,
+    "ticks":1,
+    "tooltip":"what is the maximum amount of guesses when they are limited",
+    "group":"gameplay"
+  },
+  "word_guess_counts_as_turn":{
+    "type": "checkbox",
+    "value":true,
+    "label":"word guesses count as turns",
+    "tooltip":"false if word guesses are always allowed as long as turns are not up",
+    "group":"gameplay"
+  },
+  "guess_cost":{
+    "type": "numberbox",
+    "label": "guess letter cost",
+    "value": 0,
+    "tooltip": "Cost for guessing a letter that is not a vowel",
+    "group": "costs & rewards"
+  },
+  "guess_word_cost":{
+    "type": "numberbox",
+    "label": "guess word cost",
+    "value": 0,
+    "tooltip": "Cost for guessing a word",
+    "group": "costs & rewards"
+  },
+  "guess_vowel_cost":{
+    "type": "numberbox",
+    "label": "guess vowel cost",
+    "value": 0,
+    "tooltip": "Cost for guessing a letter that is a vowel",
+    "group": "costs & rewards"
+  },
+  "find_letter_reward":{
+    "type": "numberbox",
+    "label": "find letter reward",
+    "value": 0,
+    "tooltip": "this is not rewarded when the letter completes the word",
+    "group": "costs & rewards"
+  },
+  "finish_word_reward":{
+    "type": "numberbox",
+    "label": "find or finish word reward",
+    "value": 0,
+    "tooltip": "rewarded to user who guesses or completes the word",
+    "group": "costs & rewards"
+  },
+  "start_game_command": {
+    "type": "textbox",
+    "value": "!startHangman",
+    "label": "start game command",
+    "tooltip": "needs to start with !",
+    "group": "command names"
+  },
+  "guess_command": {
+    "type": "textbox",
+    "value": "!guess",
+    "label": "guess command",
+    "tooltip": "guess letter (and word if not using 2 commands)",
+    "group": "command names"
+  },
+  "guess_word_command": {
+    "type": "textbox",
+    "value": "!guessWord",
+    "label": "guess word command",
+    "tooltip": "only used when 'different guess commands' is enabled",
+    "group": "command names"
+  },
+  "currency_name": {
+    "type": "textbox",
+    "value": "points",
+    "label": "currency name",
+    "tooltip": "without !, only for display purposes",
+    "group": "command names"
+  }
+}
