@@ -24,7 +24,7 @@ They will be kept in sync in real-time
 ## lots of customisation options
 * global & user cooldown
 * command names
-* min word length for random words
+* min & max word length for random words
 * costs & rewards
 * max turns & what counts as turn
 * combined or separate commands
@@ -41,5 +41,6 @@ streamers that are using this script:
 * [Billie_bob](http://www.twitch.tv/billie_bob)
 
 ### changelog:
+v 1.0.1: add max_word_length option
 
 v 1.0.0: made public

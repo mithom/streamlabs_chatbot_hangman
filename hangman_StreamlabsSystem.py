@@ -17,7 +17,7 @@ ScriptName = "Hangman"
 Website = "https://www.Streamlabs.Chatbot.com"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.0.0"
+Version = "1.0.1"
 
 # ---------------------------------------
 #   Set Global Variables
