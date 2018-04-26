@@ -51,6 +51,16 @@
     "tooltip":"how long should a random word at least be",
     "group":"config"
   },
+  "max_word_length":{
+    "type":"slider",
+    "label":"max word length",
+    "value": 10,
+    "min": 5,
+    "max": 20,
+    "ticks":1,
+    "tooltip":"how long should a random word maximum be",
+    "group":"config"
+  },
   "send_message_if_not_enough_points":{
     "type": "checkbox",
     "value": true,

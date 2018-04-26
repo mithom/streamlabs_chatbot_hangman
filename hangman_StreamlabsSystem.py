@@ -159,8 +159,9 @@ class WordsApi(object):
                                           postData, headerParams)
         response = json.loads(response)
         if response['status'] == 200:
-            Parent.Log(ScriptName, str(response))
             return json.loads(response['response'])['word']
+        else:
+            Parent.Log(ScriptName, str(response))
         return None
 
 
@@ -363,7 +364,8 @@ def start_game_command(user, **kwargs):
 
 def get_random_word():
     words_api = WordsApi(m_Client)
-    return words_api.getRandomWord(hasDictionaryDef=True, minLength=ScriptSettings.min_word_length)
+    return words_api.getRandomWord(hasDictionaryDef=True, minLength=ScriptSettings.min_word_length,
+                                   maxLength=ScriptSettings.max_word_length)
 
 
 def get_random_word_with_length(length):
