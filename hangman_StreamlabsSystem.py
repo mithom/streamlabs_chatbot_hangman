@@ -260,7 +260,7 @@ def load_game():
             m_GameRunning = False
         else:
             m_GameRunning = True
-            Parent.SendTwitchMessage('/me current game is still in progress')
+            Parent.SendStreamMessage('/me current game is still in progress')
             send_progress()
     except:
         Parent.Log(ScriptName, "failed to load current game, game has been reset")
@@ -316,14 +316,14 @@ def send_if_not_on_cd(cd_name, to_send, user, cooldown):
     if ScriptSettings.use_cd:
         if ScriptSettings.individual_cd:
             if not Parent.IsOnUserCooldown(ScriptName, cd_name, user):
-                Parent.SendTwitchMessage(to_send)
+                Parent.SendStreamMessage(to_send)
                 Parent.AddUserCooldown(ScriptName, cd_name, user, cooldown)
         else:
             if not Parent.IsOnCooldown(ScriptName, cd_name):
-                Parent.SendTwitchMessage(to_send)
+                Parent.SendStreamMessage(to_send)
                 Parent.AddCooldown(ScriptName, cd_name, cooldown)
     else:
-        Parent.SendTwitchMessage(to_send)
+        Parent.SendStreamMessage(to_send)
 
 
 def start_game():
@@ -366,7 +366,7 @@ def start_game_command(user, **kwargs):
                       ScriptSettings.guess_command
             if ScriptSettings.use_different_guess_command:
                 to_send += " and %s" % ScriptSettings.guess_word_command
-            Parent.SendTwitchMessage(to_send)
+            Parent.SendStreamMessage(to_send)
             send_progress()
         else:
             Parent.SendTwitchWhisper(user, "current game still in progress")
@@ -395,7 +395,7 @@ def add_turn():
     m_turns += 1
     if ScriptSettings.end_after_x_turns and m_turns >= ScriptSettings.nb_turns:
         if not is_finished():
-            Parent.SendTwitchMessage(
+            Parent.SendStreamMessage(
                 '/me the word has not been found within the turn limit, the solution was %s' % m_CurrentSolution)
         end_game()
     save_game()
@@ -422,15 +422,15 @@ def guess_word(user, word):
                     send_progress()
                     end_game()
                 else:
-                    Parent.SendTwitchMessage('/me %s, the word %s is incorrect, better luck next time' % (user, word))
+                    Parent.SendStreamMessage('/me %s, the word %s is incorrect, better luck next time' % (user, word))
                     add_turn()
             elif ScriptSettings.send_message_if_not_enough_points:
                 current_user_points = Parent.GetPoints(user)
-                Parent.SendTwitchMessage("/me %s, you don't have enough %s, you need %i and only have %i" %
+                Parent.SendStreamMessage("/me %s, you don't have enough %s, you need %i and only have %i" %
                                          (user, ScriptSettings.currency_name,
                                           ScriptSettings.guess_word_cost, current_user_points))
     else:
-        Parent.SendTwitchMessage('/me there is currently no hangman game running, pls start one using %s' %
+        Parent.SendStreamMessage('/me there is currently no hangman game running, pls start one using %s' %
                                  ScriptSettings.start_game_command)
 
 
@@ -448,7 +448,7 @@ def guess_letter(user, letter):
                         fill_in_letter(letter)
                         reward(user, letter)
                     else:
-                        Parent.SendTwitchMessage(
+                        Parent.SendStreamMessage(
                             "/me %s, %s is not in the word" % (
                                 user, letter))
                         add_turn()
@@ -458,11 +458,11 @@ def guess_letter(user, letter):
                         send_progress()
                 elif ScriptSettings.send_message_if_not_enough_points:
                     current_user_points = Parent.GetPoints(user)
-                    Parent.SendTwitchMessage("/me %s, you don't have enough %s, you need %i and only have %i" %
+                    Parent.SendStreamMessage("/me %s, you don't have enough %s, you need %i and only have %i" %
                                              (user, ScriptSettings.currency_name,
                                               ScriptSettings.guess_letter_cost, current_user_points))
         else:
-            Parent.SendTwitchMessage('/me no hangman game running (%s)' %
+            Parent.SendStreamMessage('/me no hangman game running (%s)' %
                                      ScriptSettings.start_game_command)
 
 
@@ -481,16 +481,16 @@ def reward(user, letter_or_word):
     if len(letter_or_word) == 1:
         if is_finished():
             Parent.AddPoints(user, ScriptSettings.finish_word_reward)
-            Parent.SendTwitchMessage(
+            Parent.SendStreamMessage(
                 "/me %s found the last letter (%s) and has been rewarded %s %s for finishing the word." % (
                     user, letter_or_word, ScriptSettings.finish_word_reward, ScriptSettings.currency_name))
         else:
             Parent.AddPoints(user, ScriptSettings.find_letter_reward)
-            Parent.SendTwitchMessage("/me %s found %s, reward: %s %s." % (
+            Parent.SendStreamMessage("/me %s found %s, reward: %s %s." % (
                 user, letter_or_word, ScriptSettings.find_letter_reward, ScriptSettings.currency_name))
     else:
         Parent.AddPoints(user, ScriptSettings.finish_word_reward)
-        Parent.SendTwitchMessage("/me %s has found the correct word and has been rewarded %s %s." % (
+        Parent.SendStreamMessage("/me %s has found the correct word and has been rewarded %s %s." % (
             user, ScriptSettings.finish_word_reward, ScriptSettings.currency_name))
 
 
@@ -499,7 +499,7 @@ def send_progress():
         to_send = m_CurrentWord
         if ScriptSettings.end_after_x_turns:
             to_send = "turn %i / %i : " % (m_turns, ScriptSettings.nb_turns) + to_send
-        Parent.SendTwitchMessage("/me " + to_send)
+        Parent.SendStreamMessage("/me " + to_send)
 
 
 def process_command(data):
@@ -532,7 +532,7 @@ def process_command(data):
 #   [Required] Execute Data / Process Messages
 # ---------------------------------------
 def Execute(data):
-    if data.IsFromTwitch():
+    if data.IsFromDiscord():
         param1 = data.GetParam(0)
         if (data.IsChatMessage() or data.IsWhisper()) and has_command_format(param1):
             process_command(data)

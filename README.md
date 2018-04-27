@@ -41,6 +41,8 @@ streamers that are using this script:
 * [Billie_bob](http://www.twitch.tv/billie_bob)
 
 ### changelog:
+v 1.0.2: support for youtube and mixer
+
 v 1.0.1: add max_word_length option
 
 v 1.0.0: made public
