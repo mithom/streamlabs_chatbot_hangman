@@ -284,10 +284,10 @@ def Init():
 def ReloadSettings(jsondata):
     # load in json after pressing save settings button
     global ScriptSettings, m_Client
-    Parent.Log(ScriptName, jsondata)
     ScriptSettings.reload(jsondata)
     api_url = 'http://api.wordnik.com/v4'
     m_Client = ApiClient(ScriptSettings.api_key, api_url)
+    Parent.Log("saving settings successful")
     return
 
 
