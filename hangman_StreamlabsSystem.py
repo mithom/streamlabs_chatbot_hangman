@@ -17,7 +17,7 @@ ScriptName = "Hangman"
 Website = "https://www.Streamlabs.Chatbot.com"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.0.1"
+Version = "1.0.2"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -532,7 +532,7 @@ def process_command(data):
 #   [Required] Execute Data / Process Messages
 # ---------------------------------------
 def Execute(data):
-    if data.IsFromDiscord():
+    if not data.IsFromDiscord():
         param1 = data.GetParam(0)
         if (data.IsChatMessage() or data.IsWhisper()) and has_command_format(param1):
             process_command(data)
