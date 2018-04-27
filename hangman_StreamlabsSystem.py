@@ -357,7 +357,7 @@ def start_game_command(user, **kwargs):
                 word = get_random_word()
             if word is None:
                 end_game()
-                Parent.SendTwitchWhisper(user, "failed to retrieve a random word, check your connection & api-key")
+                Parent.SendStreamWhisper(user, "failed to retrieve a random word, check your connection & api-key")
                 return
             m_CurrentSolution = word.lower()
             m_CurrentWord = "_ " * len(word)
@@ -369,7 +369,7 @@ def start_game_command(user, **kwargs):
             Parent.SendStreamMessage(to_send)
             send_progress()
         else:
-            Parent.SendTwitchWhisper(user, "current game still in progress")
+            Parent.SendStreamWhisper(user, "current game still in progress")
 
 
 def get_random_word():
