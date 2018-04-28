@@ -363,7 +363,10 @@ def end_game():
 
 def start_game_command(user, **kwargs):
     global m_CurrentWord, m_CurrentSolution
-    if Parent.HasPermission(user, ScriptSettings.start_game_permission, ScriptSettings.start_game_info):
+    if kwargs.get('is_bot', False):
+        user = 'auto_start'
+    if Parent.HasPermission(user, ScriptSettings.start_game_permission, ScriptSettings.start_game_info) or \
+            kwargs.get('is_bot', False):
         if start_game():
             if "length" in kwargs:
                 word = get_random_word_with_length(kwargs["length"])
@@ -597,5 +600,4 @@ def Tick():
         if (not m_GameRunning) and ScriptSettings.auto_start_game:
             if (time.clock() - m_LastGame) > ScriptSettings.auto_delay:
                 m_LastGame = time.clock()
-                user = Parent.GetChannelName()
-                start_game_command(user)
+                start_game_command(None, is_bot=True)
