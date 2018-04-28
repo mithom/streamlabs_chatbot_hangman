@@ -197,6 +197,13 @@
     "tooltip": "without !, only for display purposes",
     "group": "command names"
   },
+  "not_show_me":{
+    "type":"checkbox",
+    "value":false,
+    "label":"do not show '/me'",
+    "tooltip":"not add /me before each message",
+    "group": "youtube compatibility"
+  },
   "allow_chat_message":{
     "type": "checkbox",
     "value":false,

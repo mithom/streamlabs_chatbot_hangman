@@ -87,6 +87,7 @@ class Settings(object):
             self.currency_name = "points"
 
             # Youtube compatibility
+            self.not_show_me = False
             self.allow_chat_message = False
             self.next_word = ""
 
@@ -165,7 +166,6 @@ class WordsApi(object):
         if 'maxLength' in params:
             queryParams['maxLength'] = self.apiClient.toPathValue(params['maxLength'])
         postData = (params['body'] if 'body' in params else None)
-
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
@@ -273,7 +273,8 @@ def load_game():
             m_GameRunning = False
         else:
             m_GameRunning = True
-            Parent.SendStreamMessage('/me current game is still in progress')
+            to_send = 'current game is still in progress'
+            Parent.SendStreamMessage(format_message(to_send))
             send_progress()
     except:
         Parent.Log(ScriptName, "failed to load current game, game has been reset")
@@ -377,8 +378,9 @@ def start_game_command(user, **kwargs):
             m_CurrentSolution = word.lower()
             m_CurrentWord = "_ " * len(word)
             save_game()
-            to_send = "/me a game of hangman has been started, start guessing now using %s {letter}" % \
+            to_send = "a game of hangman has been started, start guessing now using %s {letter}" % \
                       ScriptSettings.guess_command
+            Parent.SendStreamMessage(format_message(to_send))
             if ScriptSettings.use_different_guess_command:
                 to_send += " and %s" % ScriptSettings.guess_word_command
             Parent.SendStreamMessage(to_send)
@@ -410,8 +412,8 @@ def add_turn():
     m_turns += 1
     if ScriptSettings.end_after_x_turns and m_turns >= ScriptSettings.nb_turns:
         if not is_finished():
-            Parent.SendStreamMessage(
-                '/me the word has not been found within the turn limit, the solution was %s' % m_CurrentSolution)
+            to_send = 'the word has not been found within the turn limit, the solution was %s' % m_CurrentSolution
+            Parent.SendStreamMessage(format_message(to_send))
         end_game()
     save_game()
 
@@ -430,23 +432,26 @@ def guess_word(user, word):
     if m_GameRunning:
         if not is_on_cooldown(user):
             add_cooldown(user)
-            if Parent.RemovePoints(user, ScriptSettings.guess_word_cost):
+            username = Parent.GetDisplayName(user)
+            if Parent.RemovePoints(user, username, ScriptSettings.guess_word_cost):
                 if word == m_CurrentSolution:
                     m_CurrentWord = ' '.join(m_CurrentSolution)
                     reward(user, word)
                     send_progress()
                     end_game()
                 else:
-                    Parent.SendStreamMessage('/me %s, the word %s is incorrect, better luck next time' % (user, word))
+                    to_send = '%s, the word %s is incorrect, better luck next time' % (username, word)
+                    Parent.SendStreamMessage(format_message(to_send))
                     add_turn()
             elif ScriptSettings.send_message_if_not_enough_points:
                 current_user_points = Parent.GetPoints(user)
-                Parent.SendStreamMessage("/me %s, you don't have enough %s, you need %i and only have %i" %
-                                         (user, ScriptSettings.currency_name,
-                                          ScriptSettings.guess_word_cost, current_user_points))
+                to_send = "%s, you don't have enough %s, you need %i and only have %i" % (
+                    username, ScriptSettings.currency_name, ScriptSettings.guess_word_cost, current_user_points)
+                Parent.SendStreamMessage(format_message(to_send))
     else:
-        Parent.SendStreamMessage('/me there is currently no hangman game running, pls start one using %s' %
-                                 ScriptSettings.start_game_command)
+        to_send = 'there is currently no hangman game running, pls start one using %s' % \
+                  ScriptSettings.start_game_command
+        Parent.SendStreamMessage(format_message(to_send))
 
 
 def guess_letter(user, letter):
@@ -458,14 +463,14 @@ def guess_letter(user, letter):
                     cost = ScriptSettings.guess_vowel_cost
                 else:
                     cost = ScriptSettings.guess_cost
-                if Parent.RemovePoints(user, cost):
+                username = Parent.GetDisplayName(user)
+                if Parent.RemovePoints(user, username, cost):
                     if letter in m_CurrentSolution and letter not in m_CurrentWord:
                         fill_in_letter(letter)
                         reward(user, letter)
                     else:
-                        Parent.SendStreamMessage(
-                            "/me %s, %s is not in the word" % (
-                                user, letter))
+                        to_send = "%s, %s is not in the word" % (username, letter)
+                        Parent.SendStreamMessage(format_message(to_send))
                         add_turn()
                     if is_finished():
                         end_game()
@@ -473,12 +478,12 @@ def guess_letter(user, letter):
                         send_progress()
                 elif ScriptSettings.send_message_if_not_enough_points:
                     current_user_points = Parent.GetPoints(user)
-                    Parent.SendStreamMessage("/me %s, you don't have enough %s, you need %i and only have %i" %
-                                             (user, ScriptSettings.currency_name,
-                                              ScriptSettings.guess_cost, current_user_points))
+                    to_send = "%s, you don't have enough %s, you need %i and only have %i" % (
+                        username, ScriptSettings.currency_name, ScriptSettings.guess_cost, current_user_points)
+                    Parent.SendStreamMessage(format_message(to_send))
         else:
-            Parent.SendStreamMessage('/me no hangman game running (%s)' %
-                                     ScriptSettings.start_game_command)
+            to_send = 'no hangman game running (%s)' % ScriptSettings.start_game_command
+            Parent.SendStreamMessage(format_message(to_send))
 
 
 def fill_in_letter(letter):
@@ -493,20 +498,27 @@ def is_finished():
 
 
 def reward(user, letter_or_word):
+    username = Parent.GetDisplayName(user)
     if len(letter_or_word) == 1:
         if is_finished():
-            Parent.AddPoints(user, ScriptSettings.finish_word_reward)
+            Parent.AddPoints(user, username, ScriptSettings.finish_word_reward)
             Parent.SendStreamMessage(
-                "/me %s found the last letter (%s) and has been rewarded %s %s for finishing the word." % (
-                    user, letter_or_word, ScriptSettings.finish_word_reward, ScriptSettings.currency_name))
+                format_message("%s found the last letter (%s) and has been rewarded %s %s for finishing the word." % (
+                    username, letter_or_word, ScriptSettings.finish_word_reward, ScriptSettings.currency_name)))
         else:
-            Parent.AddPoints(user, ScriptSettings.find_letter_reward)
-            Parent.SendStreamMessage("/me %s found %s, reward: %s %s." % (
-                user, letter_or_word, ScriptSettings.find_letter_reward, ScriptSettings.currency_name))
+            Parent.AddPoints(user, username, ScriptSettings.find_letter_reward)
+            Parent.SendStreamMessage(format_message("%s found %s, reward: %s %s." % (
+                username, letter_or_word, ScriptSettings.find_letter_reward, ScriptSettings.currency_name)))
     else:
-        Parent.AddPoints(user, ScriptSettings.finish_word_reward)
-        Parent.SendStreamMessage("/me %s has found the correct word and has been rewarded %s %s." % (
-            user, ScriptSettings.finish_word_reward, ScriptSettings.currency_name))
+        Parent.AddPoints(user, username, ScriptSettings.finish_word_reward)
+        Parent.SendStreamMessage(format_message("%s has found the correct word and has been rewarded %s %s." % (
+            username, ScriptSettings.finish_word_reward, ScriptSettings.currency_name)))
+
+
+def format_message(to_send):
+    if not ScriptSettings.not_show_me:
+        to_send = '/me ' + to_send
+    return to_send
 
 
 def send_progress():
@@ -514,7 +526,7 @@ def send_progress():
         to_send = m_CurrentWord
         if ScriptSettings.end_after_x_turns:
             to_send = "turn %i / %i : " % (m_turns, ScriptSettings.nb_turns) + to_send
-        Parent.SendStreamMessage("/me " + to_send)
+        Parent.SendStreamMessage(format_message(to_send))
 
 
 def process_command(data):
