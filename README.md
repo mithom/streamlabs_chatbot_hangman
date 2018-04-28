@@ -15,11 +15,16 @@ the available commands are:
 if you want to be able to use the game with random words, request an api-key at [wordnik](http://developer.wordnik.com/).
 Or mail me to get mu api-key after verification of usage.
 
+## Youtube compatibility mode
+in the settings you can enable that !startHangman {number} can also be used in chat instead of in whisper.
+In addition you can fill in a word, number (or leave empty) in the settings, press save settings and then press
+ 'start game' to start a game without the whole chat knowing the word.
+
 ### Files to read for showing on stream
 They will be kept in sync in real-time
-* solution.txt
 * unsolvedWord.txt
 * turns.txt
+* solution.txt
 
 ## lots of customisation options
 * global & user cooldown
@@ -41,7 +46,9 @@ streamers that are using this script:
 * [Billie_bob](http://www.twitch.tv/billie_bob)
 
 ### changelog:
-v 1.0.2: support for youtube and mixer
+v 1.0.3: compatibility mode for youtube
+
+v 1.0.2: support for mixer
 
 v 1.0.1: add max_word_length option
 
