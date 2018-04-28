@@ -475,7 +475,7 @@ def guess_letter(user, letter):
                     current_user_points = Parent.GetPoints(user)
                     Parent.SendStreamMessage("/me %s, you don't have enough %s, you need %i and only have %i" %
                                              (user, ScriptSettings.currency_name,
-                                              ScriptSettings.guess_letter_cost, current_user_points))
+                                              ScriptSettings.guess_cost, current_user_points))
         else:
             Parent.SendStreamMessage('/me no hangman game running (%s)' %
                                      ScriptSettings.start_game_command)
