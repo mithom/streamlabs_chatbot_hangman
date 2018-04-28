@@ -175,5 +175,27 @@
     "label": "currency name",
     "tooltip": "without !, only for display purposes",
     "group": "command names"
+  },
+  "allow_chat_message":{
+    "type": "checkbox",
+    "value":false,
+    "label":"allow random word start in chat",
+    "tooltip":"because youtube does not support whispers",
+    "group":"youtube compatibility"
+  },
+  "next_word":{
+    "type":"textbox",
+    "value":"",
+    "label":"word for next game",
+    "tooltip": "leave this empty for a random word",
+    "group": "youtube compatibility"
+  },
+  "button_start":{
+    "type":"button",
+    "label":"Start game (save settings beforehand)",
+    "tooltip":"does the same as whispering '!startHangman' to chatbot",
+    "function":"StartHangmanButton",
+    "wsevent":"EVENT_START_HANGMAN",
+    "group":"youtube compatibility"
   }
 }

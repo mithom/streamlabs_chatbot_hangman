@@ -79,6 +79,10 @@ class Settings(object):
             self.guess_word_command = "!guessWord"
             self.currency_name = "points"
 
+            # Youtube compatibility
+            self.allow_chat_message = False
+            self.next_word = ""
+
     def reload(self, jsondata):
         """ Reload settings from Chatbot user interface by given json data. """
         self.__dict__ = json.loads(jsondata, encoding="utf-8")
@@ -287,7 +291,7 @@ def ReloadSettings(jsondata):
     ScriptSettings.reload(jsondata)
     api_url = 'http://api.wordnik.com/v4'
     m_Client = ApiClient(ScriptSettings.api_key, api_url)
-    Parent.Log("saving settings successful")
+    Parent.Log(ScriptName, "saving settings successful")
     return
 
 
@@ -516,6 +520,14 @@ def process_command(data):
                 else:
                     start_game_command(data.User, word=param2)
     elif data.IsChatMessage():
+        if ScriptSettings.allow_chat_message:
+            if param1 == ScriptSettings.start_game_command:
+                if p_count == 1:
+                    start_game_command(data.User)
+                elif p_count == 2:
+                    param2 = data.GetParam(1)
+                    if param2.isdigit():
+                        start_game_command(data.User, length=int(param2))
         if p_count == 2:
             param2 = data.GetParam(1)
             if ScriptSettings.use_different_guess_command:
@@ -537,6 +549,20 @@ def Execute(data):
         if (data.IsChatMessage() or data.IsWhisper()) and has_command_format(param1):
             process_command(data)
     return
+
+
+# ---------------------------------------
+#   [button] Called when pressing the start game button
+# ---------------------------------------
+def StartHangmanButton():
+    next_word = ScriptSettings.next_word
+    user = Parent.GetChannelName()
+    if len(next_word) == 0:
+        start_game_command(user)
+    elif next_word.isdigit():
+        start_game_command(user, length=int(next_word))
+    else:
+        start_game_command(user, word=next_word)
 
 
 # ---------------------------------------
