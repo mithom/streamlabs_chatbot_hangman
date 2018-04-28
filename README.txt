@@ -46,6 +46,8 @@ streamers that are using this script:
 * [Billie_bob](http://www.twitch.tv/billie_bob)
 
 ### changelog:
+v 1.1.0: add option to auto start games after delay
+
 v 1.0.3: compatibility mode for youtube
 
 v 1.0.2: support for mixer

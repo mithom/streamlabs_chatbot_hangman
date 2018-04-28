@@ -75,6 +75,20 @@
     "tooltip": "send progress after each guess (disable when you want to show it on stream)",
     "group": "config"
   },
+  "auto_start_game":{
+    "type":"checkbox",
+    "value":false,
+    "label":"auto start games",
+    "tooltip":"automatically start a new game after a delay after last game finished",
+    "group":"config"
+  },
+  "auto_delay":{
+    "type":"numberbox",
+    "value":60,
+    "label":"delay (seconds) before starting",
+    "tooltip":"time before starting a new after previous one finished",
+    "group":"config"
+  },
   "global_cd": {
     "type": "numberbox",
     "value": 5,

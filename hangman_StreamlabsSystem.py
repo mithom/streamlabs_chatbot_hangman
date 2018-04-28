@@ -9,6 +9,7 @@ import clr
 
 clr.AddReference("IronPython.Modules.dll")
 import urllib
+import time
 
 # ---------------------------------------
 #   [Required]  Script Information
@@ -17,7 +18,7 @@ ScriptName = "Hangman"
 Website = "https://www.Streamlabs.Chatbot.com"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.0.3"
+Version = "1.1.0"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -36,6 +37,7 @@ m_SolutionFile = os.path.join(os.path.dirname(__file__), "solution.txt")
 m_TurnsFile = os.path.join(os.path.dirname(__file__), "turns.txt")
 m_Client = None
 m_turns = 0
+m_LastGame = 0
 
 
 # ---------------------------------------
@@ -59,7 +61,10 @@ class Settings(object):
             self.min_word_length = 3  # slider
             self.send_message_if_not_enough_points = True
             self.send_progress_after_guess = True
+            self.auto_start_game = False
+            self.auto_delay = 60
 
+            # Game play
             self.global_cd = 5
             self.user_cd = 15  # TODO: use these
             self.end_after_x_turns = False
@@ -274,7 +279,8 @@ def load_game():
 #   [Required] Intialize Data (Only called on Load)
 # ---------------------------------------
 def Init():
-    global ScriptSettings, m_Client
+    global ScriptSettings, m_Client, m_LastGame
+    m_LastGame = time.clock()
     api_url = 'http://api.wordnik.com/v4'
     ScriptSettings = Settings(m_SettingsFile)
     m_Client = ApiClient(ScriptSettings.api_key, api_url)
@@ -342,10 +348,11 @@ def start_game():
 
 
 def end_game():
-    global m_GameRunning, m_CurrentWord, m_CurrentSolution
+    global m_GameRunning, m_CurrentWord, m_CurrentSolution, m_LastGame
     m_GameRunning = False
     m_CurrentWord = ""
     m_CurrentSolution = ""
+    m_LastGame = time.clock()
     save_game()
 
 
@@ -569,4 +576,9 @@ def StartHangmanButton():
 #   [Required] Tick Function
 # ---------------------------------------
 def Tick():
-    return
+    global m_LastGame
+    if (not m_GameRunning) and ScriptSettings.auto_start_game:
+        if (time.clock() - m_LastGame) > ScriptSettings.auto_delay:
+            m_LastGame = time.clock()
+            user = Parent.GetChannelName()
+            start_game_command(user)
