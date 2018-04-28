@@ -166,9 +166,11 @@ class WordsApi(object):
             queryParams['maxLength'] = self.apiClient.toPathValue(params['maxLength'])
         postData = (params['body'] if 'body' in params else None)
 
+
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
         response = json.loads(response)
+        Parent.Log(ScriptName, str(queryParams))
         if response['status'] == 200:
             return json.loads(response['response'])['word']
         else:
@@ -387,13 +389,13 @@ def start_game_command(user, **kwargs):
 
 def get_random_word():
     words_api = WordsApi(m_Client)
-    return words_api.getRandomWord(hasDictionaryDef=True, minLength=ScriptSettings.min_word_length,
-                                   maxLength=ScriptSettings.max_word_length)
+    return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(ScriptSettings.min_word_length),
+                                   maxLength=int(ScriptSettings.max_word_length))
 
 
 def get_random_word_with_length(length):
     words_api = WordsApi(m_Client)
-    return words_api.getRandomWord(hasDictionaryDef=True, minLength=length, maxLength=length)
+    return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(length), maxLength=int(length))
 
 
 def guess_word_or_letter(user, word):
