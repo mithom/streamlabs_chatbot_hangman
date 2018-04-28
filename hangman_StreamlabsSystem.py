@@ -15,7 +15,7 @@ import time
 #   [Required]  Script Information
 # ---------------------------------------
 ScriptName = "Hangman"
-Website = "https://www.Streamlabs.Chatbot.com"
+Website = "https://www.twitch.tv/mi_thom"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
 Version = "1.2.0"
