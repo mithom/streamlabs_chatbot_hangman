@@ -18,7 +18,7 @@ ScriptName = "Hangman"
 Website = "https://www.Streamlabs.Chatbot.com"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.1.0"
+Version = "1.2.0"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -58,11 +58,13 @@ class Settings(object):
             self.use_different_guess_command = False
             self.start_game_permission = m_ModeratorPermission
             self.start_game_info = ""
-            self.min_word_length = 3  # slider
+            self.min_word_length = 4
+            self.max_word_length = 8
             self.send_message_if_not_enough_points = True
             self.send_progress_after_guess = True
             self.auto_start_game = False
             self.auto_delay = 60
+            self.only_online = True
 
             # Game play
             self.global_cd = 5
@@ -577,8 +579,9 @@ def StartHangmanButton():
 # ---------------------------------------
 def Tick():
     global m_LastGame
-    if (not m_GameRunning) and ScriptSettings.auto_start_game:
-        if (time.clock() - m_LastGame) > ScriptSettings.auto_delay:
-            m_LastGame = time.clock()
-            user = Parent.GetChannelName()
-            start_game_command(user)
+    if (not ScriptSettings.only_online) or Parent.IsLive():
+        if (not m_GameRunning) and ScriptSettings.auto_start_game:
+            if (time.clock() - m_LastGame) > ScriptSettings.auto_delay:
+                m_LastGame = time.clock()
+                user = Parent.GetChannelName()
+                start_game_command(user)

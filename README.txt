@@ -43,9 +43,13 @@ They will be kept in sync in real-time
 ## see it in action?
 streamers that are using this script:
 * [DaveBave](https://www.twitch.tv/davebave)
-* [Billie_bob](http://www.twitch.tv/billie_bob)
+* [Billie_bob](https://www.twitch.tv/billie_bob)
+* [mrvideofreak](https://www.twitch.tv/mrvideofreak)
+* [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.2.0: add 'online only option to aut_start & bugfix when no saved settings'
+
 v 1.1.0: add option to auto start games after delay
 
 v 1.0.3: compatibility mode for youtube

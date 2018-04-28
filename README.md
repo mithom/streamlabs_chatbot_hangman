@@ -48,6 +48,8 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.2.0: add 'online only option to aut_start & bugfix when no saved settings'
+
 v 1.1.0: add option to auto start games after delay
 
 v 1.0.3: compatibility mode for youtube

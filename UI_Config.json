@@ -44,9 +44,9 @@
   "min_word_length":{
     "type":"slider",
     "label":"min word length",
-    "value": 3,
-    "min": 1,
-    "max": 15,
+    "value": 4,
+    "min": 3,
+    "max": 10,
     "ticks":1,
     "tooltip":"how long should a random word at least be",
     "group":"config"
@@ -54,9 +54,9 @@
   "max_word_length":{
     "type":"slider",
     "label":"max word length",
-    "value": 10,
-    "min": 5,
-    "max": 20,
+    "value": 8,
+    "min": 3,
+    "max": 10,
     "ticks":1,
     "tooltip":"how long should a random word maximum be",
     "group":"config"
@@ -87,6 +87,13 @@
     "value":60,
     "label":"delay (seconds) before starting",
     "tooltip":"time before starting a new after previous one finished",
+    "group":"config"
+  },
+  "only_online":{
+    "type":"checkbox",
+    "value":true,
+    "label":"only auto start when online",
+    "tooltip":"should the streamer be online to automatically be start games",
     "group":"config"
   },
   "global_cd": {
