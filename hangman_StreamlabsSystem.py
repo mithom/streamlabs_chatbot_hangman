@@ -512,7 +512,7 @@ def reward(user, letter_or_word):
             points = ScriptSettings.find_letter_reward
             if ScriptSettings.use_multiplier:
                 points *= m_CurrentSolution.count(letter_or_word)
-            Parent.AddPoints(user, username, ScriptSettings.find_letter_reward)
+            Parent.AddPoints(user, username, points)
             Parent.SendStreamMessage(format_message("%s found %s, reward: %s %s." % (
                 username, letter_or_word, points, ScriptSettings.currency_name)))
     else:
