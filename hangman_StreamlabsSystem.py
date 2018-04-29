@@ -384,10 +384,9 @@ def start_game_command(user, **kwargs):
             save_game()
             to_send = "a game of hangman has been started, start guessing now using %s {letter}" % \
                       ScriptSettings.guess_command
-            Parent.SendStreamMessage(format_message(to_send))
             if ScriptSettings.use_different_guess_command:
                 to_send += " and %s" % ScriptSettings.guess_word_command
-            Parent.SendStreamMessage(to_send)
+            Parent.SendStreamMessage(format_message(to_send))
             send_progress()
         else:
             Parent.SendStreamWhisper(user, "current game still in progress")
