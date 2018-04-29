@@ -134,6 +134,13 @@
     "tooltip":"false if word guesses are always allowed as long as turns are not up",
     "group":"gameplay"
   },
+  "use_multiplier":{
+    "type":"checkbox",
+    "value":false,
+    "label":"award per occurrence",
+    "tooltip":"multiply the award with the amount of occurrences",
+    "group":"gameplay"
+  },
   "guess_cost":{
     "type": "numberbox",
     "label": "guess letter cost",

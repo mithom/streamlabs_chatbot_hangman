@@ -18,7 +18,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.2.1"
+Version = "1.3.0"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -72,6 +72,7 @@ class Settings(object):
             self.end_after_x_turns = False
             self.nb_turns = 7
             self.word_guess_counts_as_turn = True
+            self.use_multiplier = False
 
             # Command costs & rewards
             self.guess_cost = 0
@@ -509,9 +510,12 @@ def reward(user, letter_or_word):
                 format_message("%s found the last letter (%s) and has been rewarded %s %s for finishing the word." % (
                     username, letter_or_word, ScriptSettings.finish_word_reward, ScriptSettings.currency_name)))
         else:
+            points = ScriptSettings.find_letter_reward
+            if ScriptSettings.use_multiplier:
+                points *= m_CurrentSolution.count(letter_or_word)
             Parent.AddPoints(user, username, ScriptSettings.find_letter_reward)
             Parent.SendStreamMessage(format_message("%s found %s, reward: %s %s." % (
-                username, letter_or_word, ScriptSettings.find_letter_reward, ScriptSettings.currency_name)))
+                username, letter_or_word, points, ScriptSettings.currency_name)))
     else:
         Parent.AddPoints(user, username, ScriptSettings.finish_word_reward)
         Parent.SendStreamMessage(format_message("%s has found the correct word and has been rewarded %s %s." % (

@@ -35,6 +35,8 @@ They will be kept in sync in real-time
 * combined or separate commands
 * do/don't send info to chat that can be shown on stream
 * do/don't warn when not enough currency
+* autostart new games after previous one ends
+* do/don't use multiplier for nb occurrences of letter
 
 ### To be expected:
 * custom messages
@@ -48,6 +50,8 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.3.0: add multiplier option
+
 v 1.2.1: fix a lot of youtube issues + add option to remove '/me '
 
 v 1.2.0: add 'online only option to aut_start & bugfix when no saved settings'
