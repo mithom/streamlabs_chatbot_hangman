@@ -6,10 +6,10 @@ import codecs
 import re
 import os
 import clr
-
 clr.AddReference("IronPython.Modules.dll")
 import urllib
 import time
+import webbrowser
 
 # ---------------------------------------
 #   [Required]  Script Information
@@ -68,7 +68,7 @@ class Settings(object):
 
             # Game play
             self.global_cd = 5
-            self.user_cd = 15  # TODO: use these
+            self.user_cd = 15
             self.end_after_x_turns = False
             self.nb_turns = 7
             self.word_guess_counts_as_turn = True
@@ -379,7 +379,7 @@ def start_game_command(user, **kwargs):
                 end_game()
                 Parent.SendStreamWhisper(user, "failed to retrieve a random word, check your connection & api-key")
                 return
-            m_CurrentSolution = word.lower()
+            m_CurrentSolution = word.lower().replace(" ", "-").replace("_", "-")
             m_CurrentWord = "_ " * len(word)
             save_game()
             to_send = "a game of hangman has been started, start guessing now using %s {letter}" % \
@@ -395,12 +395,12 @@ def start_game_command(user, **kwargs):
 def get_random_word():
     words_api = WordsApi(m_Client)
     return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(ScriptSettings.min_word_length),
-                                   maxLength=int(ScriptSettings.max_word_length))
+                                   maxLength=int(ScriptSettings.max_word_length), minCorpusCount=200)
 
 
 def get_random_word_with_length(length):
     words_api = WordsApi(m_Client)
-    return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(length), maxLength=int(length))
+    return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(length), maxLength=int(length), minCorpusCount=200)
 
 
 def guess_word_or_letter(user, word):
