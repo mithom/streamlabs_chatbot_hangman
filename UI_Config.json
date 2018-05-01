@@ -5,7 +5,37 @@
     "value": "Your key here",
     "label": "wordnik api-key",
     "tooltip": "get your api key at http://developer.wordnik.com/",
-    "group": "wordnik api config"
+    "group": "random word api config"
+  },
+  "get_api_key":{
+    "type":"button",
+    "label":"get wordnik api key",
+    "tooltip":"opens a webpage to get the api key",
+    "function":"GetWordnikApiKey",
+    "wsevent":"",
+    "group":"random word api config"
+  },
+  "use_file":{
+    "type":"checkbox",
+    "value":false,
+    "label":"use textfile for random words",
+    "tooltip":"if you want to provide a list of words to choose random words from, enable this",
+    "group":"random word api config"
+  },
+  "file_name":{
+    "type":"textbox",
+    "value":"words.txt",
+    "label":"random words file name",
+    "tooltip":"the file needs to be placed inside the hangman script folds (right click to open folder)",
+    "group":"random word api config"
+  },
+  "open_folder":{
+    "type":"button",
+    "label":"open script folder",
+    "tooltip":"here you have to add the words file if you selected 'use textfile for random words'",
+    "function":"OpenScriptFolder",
+    "wsevent":"",
+    "group":"random word api config"
   },
   "use_different_guess_command": {
     "type": "checkbox",

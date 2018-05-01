@@ -37,6 +37,7 @@ They will be kept in sync in real-time
 * do/don't warn when not enough currency
 * autostart new games after previous one ends
 * do/don't use multiplier for nb occurrences of letter
+* random words retrieved from api or given file
 
 ### To be expected:
 * custom messages
@@ -50,6 +51,8 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.4.0: add possibility to read words from file instead of api
+
 v 1.3.0: add multiplier option
 
 v 1.2.1: fix a lot of youtube issues + add option to remove '/me '

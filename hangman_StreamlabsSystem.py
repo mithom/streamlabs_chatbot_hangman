@@ -9,7 +9,8 @@ import clr
 clr.AddReference("IronPython.Modules.dll")
 import urllib
 import time
-import webbrowser
+import random
+
 
 # ---------------------------------------
 #   [Required]  Script Information
@@ -18,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.3.0"
+Version = "1.4.0"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -38,6 +39,7 @@ m_TurnsFile = os.path.join(os.path.dirname(__file__), "turns.txt")
 m_Client = None
 m_turns = 0
 m_LastGame = 0
+m_random_words_from_file = []
 
 
 # ---------------------------------------
@@ -51,8 +53,10 @@ class Settings(object):
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 self.__dict__ = json.load(f, encoding="utf-8")
         except:
-            # api key
+            # random_words
             self.api_key = "Your key here"
+            self.use_file = False
+            self.file_name = "words.txt"
 
             # Config
             self.use_different_guess_command = False
@@ -91,10 +95,12 @@ class Settings(object):
             self.not_show_me = False
             self.allow_chat_message = False
             self.next_word = ""
+        self.save(settingsfile)
 
     def reload(self, jsondata):
         """ Reload settings from Chatbot user interface by given json data. """
         self.__dict__ = json.loads(jsondata, encoding="utf-8")
+        self.save(m_SettingsFile)
         return
 
     def save(self, settingsfile):
@@ -281,6 +287,13 @@ def load_game():
         Parent.Log(ScriptName, "failed to load current game, game has been reset")
 
 
+def load_random_words():
+    global m_random_words_from_file
+    if ScriptSettings.use_file:
+        with open(os.path.join(os.path.dirname(__file__), ScriptSettings.file_name), "r") as f:
+            m_random_words_from_file = f.readlines()
+
+
 # ---------------------------------------
 #   [Required] Intialize Data (Only called on Load)
 # ---------------------------------------
@@ -291,6 +304,7 @@ def Init():
     ScriptSettings = Settings(m_SettingsFile)
     m_Client = ApiClient(ScriptSettings.api_key, api_url)
     load_game()
+    load_random_words()
     return
 
 
@@ -304,6 +318,8 @@ def ReloadSettings(jsondata):
     api_url = 'http://api.wordnik.com/v4'
     m_Client = ApiClient(ScriptSettings.api_key, api_url)
     Parent.Log(ScriptName, "saving settings successful")
+    load_game()
+    load_random_words()
     return
 
 
@@ -393,14 +409,31 @@ def start_game_command(user, **kwargs):
 
 
 def get_random_word():
-    words_api = WordsApi(m_Client)
-    return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(ScriptSettings.min_word_length),
-                                   maxLength=int(ScriptSettings.max_word_length), minCorpusCount=200)
+    if ScriptSettings.use_file:
+        return get_random_word_from_file(ScriptSettings.min_word_length, ScriptSettings.max_word_length)
+    else:
+        words_api = WordsApi(m_Client)
+        return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(ScriptSettings.min_word_length),
+                                       maxLength=int(ScriptSettings.max_word_length), minCorpusCount=200)
 
 
 def get_random_word_with_length(length):
-    words_api = WordsApi(m_Client)
-    return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(length), maxLength=int(length), minCorpusCount=200)
+    if ScriptSettings.use_file:
+        return get_random_word_from_file(length, length)
+    else:
+        words_api = WordsApi(m_Client)
+        return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(length), maxLength=int(length),
+                                       minCorpusCount=200)
+
+
+def get_random_word_from_file(min_length, max_length):
+    possibilities = m_random_words_from_file
+    while len(possibilities) > 0:
+        word = random.choice(possibilities).strip()
+        if max_length >= len(word) >= min_length:
+            return word
+        else:
+            possibilities.remove(word)
 
 
 def guess_word_or_letter(user, word):
@@ -604,3 +637,14 @@ def Tick():
             if (time.clock() - m_LastGame) > ScriptSettings.auto_delay:
                 m_LastGame = time.clock()
                 start_game_command(None, is_bot=True)
+
+
+# ---------------------------------------
+#   Button function
+# ---------------------------------------
+def GetWordnikApiKey():
+    os.system("start \"\" http://developer.wordnik.com")
+
+
+def OpenScriptFolder():
+    os.startfile(os.path.dirname(__file__))
