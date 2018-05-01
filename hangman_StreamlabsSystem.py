@@ -292,6 +292,8 @@ def load_random_words():
     if ScriptSettings.use_file:
         with open(os.path.join(os.path.dirname(__file__), ScriptSettings.file_name), "r") as f:
             m_random_words_from_file = f.readlines()
+        for i in xrange(len(m_random_words_from_file)):
+            m_random_words_from_file[i] = m_random_words_from_file[i].strip()
 
 
 # ---------------------------------------
@@ -429,7 +431,7 @@ def get_random_word_with_length(length):
 def get_random_word_from_file(min_length, max_length):
     possibilities = m_random_words_from_file
     while len(possibilities) > 0:
-        word = random.choice(possibilities).strip()
+        word = random.choice(possibilities)
         if max_length >= len(word) >= min_length:
             return word
         else:
