@@ -41,6 +41,7 @@ They will be kept in sync in real-time
 
 ### To be expected:
 * custom messages
+* draw hangman as overlay (sliced for too big amount), possibility to add used letters on overlay
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
 * your feature request here? mail me @ mi_thom@hotmail.com
@@ -53,6 +54,8 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.4.1: everything is case insensitive
+
 v 1.4.0: add possibility to read words from file instead of api
 
 v 1.3.0: add multiplier option

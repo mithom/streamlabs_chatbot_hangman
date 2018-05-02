@@ -472,6 +472,7 @@ def guess_word(user, word):
             add_cooldown(user)
             username = Parent.GetDisplayName(user)
             if Parent.RemovePoints(user, username, ScriptSettings.guess_word_cost):
+                word = word.lower()
                 if word == m_CurrentSolution:
                     m_CurrentWord = ' '.join(m_CurrentSolution)
                     reward(user, word)
@@ -497,6 +498,7 @@ def guess_letter(user, letter):
         if m_GameRunning:
             if not is_on_cooldown(user):
                 add_cooldown(user)
+                letter = letter.lower()
                 if letter in m_vowels:
                     cost = ScriptSettings.guess_vowel_cost
                 else:
