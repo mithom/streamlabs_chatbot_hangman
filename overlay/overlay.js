@@ -99,7 +99,7 @@ function init_sockets() {
                     if(main_body.childElementCount > 0){
                         main_body.removeChild(main_body.firstChild);
                     }
-                }, settings["vanish_delay"]);
+                }, settings["vanish_delay"]*1000);
                 break;
             case 'EVENT_GUESSED_WORD_WRONG_HANGMAN':
                 showNextImage();
