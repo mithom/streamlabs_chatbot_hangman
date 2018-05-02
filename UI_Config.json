@@ -241,6 +241,13 @@
     "tooltip":"delay after end of game before overlay vanishes",
     "group":"overlay"
   },
+  "hangman_color":{
+    "type":"colorpicker",
+    "value":"rgba(0,0,0,255)",
+    "label":"hangman color",
+    "tooltip":"the color of the hangman that gets drawn in the overlay",
+    "group":"overlay"
+  },
   "not_show_me":{
     "type":"checkbox",
     "value":false,

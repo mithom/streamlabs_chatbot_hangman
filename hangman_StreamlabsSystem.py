@@ -93,6 +93,7 @@ class Settings(object):
 
             # Overlay
             self.vanish_delay = 10
+            self.hangman_color = "rgba(0,0,0,255)"
 
             # Youtube compatibility
             self.not_show_me = False
@@ -320,7 +321,7 @@ def ReloadSettings(jsondata):
     # load in json after pressing save settings button
     global ScriptSettings, m_Client
     ScriptSettings.reload(jsondata)
-    Parent.BroadcastWsEvent("EVENT_RELOAD_SETTINGS", jsondata)
+    Parent.BroadcastWsEvent("EVENT_RELOAD_SETTINGS_HANGMAN", jsondata)
     api_url = 'http://api.wordnik.com/v4'
     m_Client = ApiClient(ScriptSettings.api_key, api_url)
     Parent.Log(ScriptName, "saving settings successful")
@@ -369,6 +370,7 @@ def end_game():
     m_CurrentSolution = ""
     m_LastGame = time.clock()
     save_game()
+    Parent.BroadcastWsEvent("EVENT_END_HANGMAN", "")
 
 
 def start_game_command(user, **kwargs):
@@ -473,6 +475,7 @@ def guess_word(user, word):
                     to_send = '%s, the word %s is incorrect, better luck next time' % (username, word)
                     Parent.SendStreamMessage(format_message(to_send))
                     if ScriptSettings.word_guess_counts_as_turn:
+                        Parent.BroadcastWsEvent("EVENT_GUESSED_WORD_WRONG_HANGMAN", json.dumps({"word": word}))
                         add_turn()
             elif ScriptSettings.send_message_if_not_enough_points:
                 current_user_points = Parent.GetPoints(user)
@@ -503,6 +506,7 @@ def guess_letter(user, letter):
                     else:
                         to_send = "%s, %s is not in the word" % (username, letter)
                         Parent.SendStreamMessage(format_message(to_send))
+                        Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"letter":letter}))
                         add_turn()
                     if is_finished():
                         end_game()
