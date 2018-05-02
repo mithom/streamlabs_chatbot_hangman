@@ -19,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.4.0"
+Version = "1.4.2"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -463,6 +463,7 @@ def guess_word(user, word):
             add_cooldown(user)
             username = Parent.GetDisplayName(user)
             if Parent.RemovePoints(user, username, ScriptSettings.guess_word_cost):
+                word = word.lower()
                 if word == m_CurrentSolution:
                     m_CurrentWord = ' '.join(m_CurrentSolution)
                     reward(user, word)
@@ -471,7 +472,8 @@ def guess_word(user, word):
                 else:
                     to_send = '%s, the word %s is incorrect, better luck next time' % (username, word)
                     Parent.SendStreamMessage(format_message(to_send))
-                    add_turn()
+                    if ScriptSettings.word_guess_counts_as_turn:
+                        add_turn()
             elif ScriptSettings.send_message_if_not_enough_points:
                 current_user_points = Parent.GetPoints(user)
                 to_send = "%s, you don't have enough %s, you need %i and only have %i" % (
@@ -488,6 +490,7 @@ def guess_letter(user, letter):
         if m_GameRunning:
             if not is_on_cooldown(user):
                 add_cooldown(user)
+                letter = letter.lower()
                 if letter in m_vowels:
                     cost = ScriptSettings.guess_vowel_cost
                 else:
