@@ -37,6 +37,7 @@ function prepareImages() {
     image.src = "hangman_images/10.png";
 }
 function _prepareImages() {
+    cutImages = [];
     for (var y = 0; y < settings["nb_turns"]; ++y) {
         var canvas = document.createElement('canvas');
         canvas.width = image.width;
@@ -139,7 +140,7 @@ function add_hangman_image(src) {
             var b = rgba[2];
             var a = rgba[3];
             this.fillColor(r, g, b);
-            this.opacity(a)
+            this.opacity(a*100)
         });
         this.render();
     });
