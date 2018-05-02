@@ -234,6 +234,13 @@
     "tooltip": "without !, only for display purposes",
     "group": "command names"
   },
+  "vanish_delay":{
+    "type":"numberbox",
+    "value":10,
+    "label":"vanish delay (seconds)",
+    "tooltip":"delay after end of game before overlay vanishes",
+    "group":"overlay"
+  },
   "not_show_me":{
     "type":"checkbox",
     "value":false,

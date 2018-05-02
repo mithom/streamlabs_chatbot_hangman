@@ -91,6 +91,9 @@ class Settings(object):
             self.guess_word_command = "!guessWord"
             self.currency_name = "points"
 
+            # Overlay
+            self.vanish_delay = 10
+
             # Youtube compatibility
             self.not_show_me = False
             self.allow_chat_message = False
@@ -317,6 +320,7 @@ def ReloadSettings(jsondata):
     # load in json after pressing save settings button
     global ScriptSettings, m_Client
     ScriptSettings.reload(jsondata)
+    Parent.BroadcastWsEvent("EVENT_RELOAD_SETTINGS", jsondata)
     api_url = 'http://api.wordnik.com/v4'
     m_Client = ApiClient(ScriptSettings.api_key, api_url)
     Parent.Log(ScriptName, "saving settings successful")
@@ -346,20 +350,6 @@ def has_command_format(first_word):
     return first_word[0] == "!"
 
 
-def send_if_not_on_cd(cd_name, to_send, user, cooldown):
-    if ScriptSettings.use_cd:
-        if ScriptSettings.individual_cd:
-            if not Parent.IsOnUserCooldown(ScriptName, cd_name, user):
-                Parent.SendStreamMessage(to_send)
-                Parent.AddUserCooldown(ScriptName, cd_name, user, cooldown)
-        else:
-            if not Parent.IsOnCooldown(ScriptName, cd_name):
-                Parent.SendStreamMessage(to_send)
-                Parent.AddCooldown(ScriptName, cd_name, cooldown)
-    else:
-        Parent.SendStreamMessage(to_send)
-
-
 def start_game():
     global m_GameRunning
     global m_turns
@@ -368,6 +358,7 @@ def start_game():
     else:
         m_GameRunning = True
         m_turns = 0
+        Parent.BroadcastWsEvent("EVENT_START_HANGMAN", "")
         return True
 
 

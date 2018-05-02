@@ -43,6 +43,7 @@ They will be kept in sync in real-time
 * custom messages
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
+* add picture of streamer as head of overlay
 * your feature request here? mail me @ mi_thom@hotmail.com
 
 ## see it in action?
