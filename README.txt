@@ -54,6 +54,8 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.4.2: fix word_guess_counts_as_turn option
+
 v 1.4.1: everything is case insensitive
 
 v 1.4.0: add possibility to read words from file instead of api
