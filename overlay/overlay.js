@@ -31,21 +31,47 @@ function reload_settings(json_data) {
 }
 
 var turn = 0;
-var image = new Image();
+
 function prepareImages() {
-    image.onload = _prepareImages;
-    image.src = "hangman_images/10.png";
+    _prepareImages();
 }
 function _prepareImages() {
-    cutImages = [];
+    cutImages = new Array(settings["nb_turns"]);
     for (var y = 0; y < settings["nb_turns"]; ++y) {
-        var canvas = document.createElement('canvas');
-        canvas.width = image.width;
-        canvas.height = image.height;
-        var context = canvas.getContext('2d');
-        context.drawImage(image, 0, image.height - Math.round(image.height * (y+1) / settings["nb_turns"]), image.width, Math.round(image.height * (y+1) / settings["nb_turns"]), 0,
-            image.height - Math.round(image.height * (y+1) / settings["nb_turns"]), image.width, Math.round(image.height * (y+1) / settings["nb_turns"]) );
-        cutImages.push(canvas.toDataURL());
+		var img = document.createElement("img");
+		img.onload = (function(y){
+			return function(){
+				console.log(y);
+				var canvas = document.createElement("canvas");
+				canvas.width = img.width;
+				canvas.height = img.height;
+				var context = canvas.getContext('2d');
+				context.drawImage(img, 0, img.height - Math.round(img.height * (y+1) / settings["nb_turns"]), img.width, Math.round(img.height * (y+1) / settings["nb_turns"]), 0,
+				img.height - Math.round(img.height * (y+1) / settings["nb_turns"]), img.width, Math.round(img.height * (y+1) / settings["nb_turns"]) );
+
+				Caman(canvas, function () {
+					this.newLayer(function () {
+						this.setBlendingMode("normal");
+						var rgba = getRGBA();
+						var r = rgba[0];
+						var g = rgba[1];
+						var b = rgba[2];
+						this.fillColor(r, g, b);
+					});
+					this.render(function(){
+						cutImages[y] = canvas.toDataURL();
+					});
+				});
+			}
+		})(y);
+		img.src = "hangman_images/10.png";
+		/*var div = document.createElement("div");
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        div.appendChild(img);
+        */
+
     }
 }
 
@@ -94,8 +120,9 @@ function init_sockets() {
                     main_body.removeChild(main_body.firstChild);
                 }
                 break;
-            case 'EVENT_END_HANGMAN_HANGMAN':
+            case 'EVENT_END_HANGMAN':
                 setTimeout(function () {
+					var main_body = document.getElementById("main_body");
                     if(main_body.firstChild != null){
                         main_body.removeChild(main_body.firstChild);
                     }
@@ -125,28 +152,31 @@ function showNextImage() {
     }else{
         src = cutImages[turn-1];
     }
-    add_hangman_image(src)
+    add_hangman_image(src);
 }
 
 function add_hangman_image(src) {
     var img = document.createElement("img");
+    //img.crossOrigin = "Anonymous";*/
     img.setAttribute("src", src);
-    Caman(img, function () {
-        this.newLayer(function () {
-            this.setBlendingMode("normal");
-            var rgba = getRGBA();
-            var r = rgba[0];
-            var g = rgba[1];
-            var b = rgba[2];
-            this.fillColor(r, g, b);
-        });
-        this.render();
-    });
     var main_body = document.getElementById("main_body");
+	if(settings["nb_turns"] in imageOrder){
+		Caman(img, function () {
+			this.newLayer(function () {
+				this.setBlendingMode("normal");
+				var rgba = getRGBA();
+				var r = rgba[0];
+				var g = rgba[1];
+				var b = rgba[2];
+				this.fillColor(r, g, b);
+			});
+			this.render();
+		});
+	}
     if(main_body.firstChild != null){
         main_body.removeChild(main_body.firstChild);
     }
-    main_body.appendChild(img);
+	main_body.appendChild(img);
 }
 
 function getRGBA() {
