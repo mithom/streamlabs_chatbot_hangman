@@ -90,13 +90,13 @@ function init_sockets() {
                 break;
             case 'EVENT_START_HANGMAN':
                 turn = 0;
-                if(main_body.childElementCount > 0){
+                if(main_body.firstChild != null){
                     main_body.removeChild(main_body.firstChild);
                 }
                 break;
             case 'EVENT_END_HANGMAN_HANGMAN':
                 setTimeout(function () {
-                    if(main_body.childElementCount > 0){
+                    if(main_body.firstChild != null){
                         main_body.removeChild(main_body.firstChild);
                     }
                 }, settings["vanish_delay"]*1000);
@@ -105,7 +105,7 @@ function init_sockets() {
                 showNextImage();
                 break;
             case 'EVENT_GUESSED_LETTER_WRONG_HANGMAN':
-                add_hangman_image();
+                showNextImage();
         }
     };
 
@@ -138,14 +138,12 @@ function add_hangman_image(src) {
             var r = rgba[0];
             var g = rgba[1];
             var b = rgba[2];
-            var a = rgba[3];
             this.fillColor(r, g, b);
-            this.opacity(a*100)
         });
         this.render();
     });
     var main_body = document.getElementById("main_body");
-    if(main_body.childElementCount > 0){
+    if(main_body.firstChild != null){
         main_body.removeChild(main_body.firstChild);
     }
     main_body.appendChild(img);
