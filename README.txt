@@ -25,6 +25,7 @@ They will be kept in sync in real-time
 * unsolvedWord.txt
 * turns.txt
 * solution.txt
+* needs to be shown with browser plugin: overlay/overlay.html
 
 ## lots of customisation options
 * global & user cooldown
@@ -38,10 +39,12 @@ They will be kept in sync in real-time
 * autostart new games after previous one ends
 * do/don't use multiplier for nb occurrences of letter
 * random words retrieved from api or given file
+* color of hangman overlay
+* how long overlay lingers after finishing game
 
 ### To be expected:
 * custom messages
-* draw hangman as overlay (sliced for too big amount), possibility to add used letters on overlay
+* possibility to add used letters on overlay
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
 * add picture of streamer as head of overlay
@@ -50,11 +53,14 @@ They will be kept in sync in real-time
 ## see it in action?
 streamers that are using this script:
 * [DaveBave](https://www.twitch.tv/davebave)
+* [-Kel- (mixer)](https://www.mixer.com/-kel-)
 * [Billie_bob](https://www.twitch.tv/billie_bob)
 * [mrvideofreak](https://www.twitch.tv/mrvideofreak)
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.5.0: draw hangman as overlay (sliced for too big amount)
+
 v 1.4.2: fix word_guess_counts_as_turn option
 
 v 1.4.1: everything is case insensitive

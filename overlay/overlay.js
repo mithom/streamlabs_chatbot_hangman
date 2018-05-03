@@ -65,13 +65,6 @@ function _prepareImages() {
 			}
 		})(y);
 		img.src = "hangman_images/10.png";
-		/*var div = document.createElement("div");
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-        div.appendChild(img);
-        */
-
     }
 }
 
