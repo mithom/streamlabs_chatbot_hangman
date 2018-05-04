@@ -25,6 +25,7 @@ They will be kept in sync in real-time
 * unsolvedWord.txt
 * turns.txt
 * solution.txt
+* usedLetters.txt
 * needs to be shown with browser plugin: overlay/overlay.html
 
 ## lots of customisation options
@@ -44,7 +45,6 @@ They will be kept in sync in real-time
 
 ### To be expected:
 * custom messages
-* possibility to add used letters on overlay
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
 * add picture of streamer as head of overlay
@@ -59,6 +59,10 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.6.0: keep track of used letters
+
+v 1.5.1: make overlay robuster in multiple ways
+
 v 1.5.0: draw hangman as overlay (sliced for too big amount)
 
 v 1.4.2: fix word_guess_counts_as_turn option

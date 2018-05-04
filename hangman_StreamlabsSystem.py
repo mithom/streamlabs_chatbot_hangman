@@ -19,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.5.0"
+Version = "1.6.0"
 
 # ---------------------------------------
 #   Set Global Variables
