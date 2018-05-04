@@ -36,10 +36,12 @@ m_GameRunning = False
 m_WordFile = os.path.join(os.path.dirname(__file__), "unsolvedWord.txt")
 m_SolutionFile = os.path.join(os.path.dirname(__file__), "solution.txt")
 m_TurnsFile = os.path.join(os.path.dirname(__file__), "turns.txt")
+m_UsedFile = os.path.join(os.path.dirname(__file__), "usedLetters.txt")
 m_Client = None
 m_turns = 0
 m_LastGame = 0
 m_random_words_from_file = []
+m_UsedLetters = []
 
 
 # ---------------------------------------
@@ -246,7 +248,7 @@ class ApiClient:
 # ---------------------------------------
 #   Init & Cleanup functions
 # ---------------------------------------
-def save_game():
+def save_game(added_letter=None):
     try:
         with open(m_WordFile, "w") as f:
             f.write(m_CurrentWord or "")
@@ -260,13 +262,19 @@ def save_game():
                     f.write(str(m_turns))
             else:
                 f.write("")
+        if added_letter is not None and not is_finished():
+            with open(m_UsedFile, "a") as f:
+                f.write(added_letter + " ")
+        else:
+            with open(m_UsedFile, "w") as f:
+                f.write(" ".join(m_UsedLetters))
     except:
         Parent.Log(ScriptName, "Failed to save the current game")
     return
 
 
 def load_game():
-    global m_GameRunning, m_CurrentWord, m_CurrentSolution, m_turns
+    global m_GameRunning, m_CurrentWord, m_CurrentSolution, m_turns, m_UsedLetters
     try:
         with open(m_SolutionFile, "r") as f:
             m_CurrentSolution = f.read()
@@ -278,6 +286,8 @@ def load_game():
                 m_turns = int(var.split("/")[0])
             else:
                 m_turns = 0
+        with open(m_UsedFile, "r") as f:
+            m_UsedLetters = f.read().split()
         if len(m_CurrentSolution) == 0:
             m_CurrentWord = None
             m_CurrentSolution = None
@@ -364,11 +374,12 @@ def start_game():
 
 
 def end_game():
-    global m_GameRunning, m_CurrentWord, m_CurrentSolution, m_LastGame
+    global m_GameRunning, m_CurrentWord, m_CurrentSolution, m_LastGame, m_UsedLetters
     m_GameRunning = False
     m_CurrentWord = ""
     m_CurrentSolution = ""
     m_LastGame = time.clock()
+    m_UsedLetters = []
     save_game()
     Parent.BroadcastWsEvent("EVENT_END_HANGMAN", "")
 
@@ -438,7 +449,7 @@ def guess_word_or_letter(user, word):
         guess_word(user, word)
 
 
-def add_turn():
+def add_turn(letter=None):
     global m_turns
     m_turns += 1
     if ScriptSettings.end_after_x_turns and m_turns >= ScriptSettings.nb_turns:
@@ -446,7 +457,7 @@ def add_turn():
             to_send = 'the word has not been found within the turn limit, the solution was %s' % m_CurrentSolution
             Parent.SendStreamMessage(format_message(to_send))
         end_game()
-    save_game()
+    save_game(letter)
 
 
 def is_on_cooldown(user):
@@ -507,7 +518,11 @@ def guess_letter(user, letter):
                         to_send = "%s, %s is not in the word" % (username, letter)
                         Parent.SendStreamMessage(format_message(to_send))
                         Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"turn": m_turns+1}))
-                        add_turn()
+                        if letter in m_UsedLetters:
+                            add_turn()
+                        else:
+                            m_UsedLetters.append(letter)
+                            add_turn(letter)
                     if is_finished():
                         end_game()
                     else:
