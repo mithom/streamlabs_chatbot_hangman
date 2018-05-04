@@ -475,7 +475,7 @@ def guess_word(user, word):
                     to_send = '%s, the word %s is incorrect, better luck next time' % (username, word)
                     Parent.SendStreamMessage(format_message(to_send))
                     if ScriptSettings.word_guess_counts_as_turn:
-                        Parent.BroadcastWsEvent("EVENT_GUESSED_WORD_WRONG_HANGMAN", json.dumps({"word": word}))
+                        Parent.BroadcastWsEvent("EVENT_GUESSED_WORD_WRONG_HANGMAN", json.dumps({"turn": m_turns+1}))
                         add_turn()
             elif ScriptSettings.send_message_if_not_enough_points:
                 current_user_points = Parent.GetPoints(user)
@@ -506,7 +506,7 @@ def guess_letter(user, letter):
                     else:
                         to_send = "%s, %s is not in the word" % (username, letter)
                         Parent.SendStreamMessage(format_message(to_send))
-                        Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"letter":letter}))
+                        Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"turn": m_turns+1}))
                         add_turn()
                     if is_finished():
                         end_game()

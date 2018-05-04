@@ -126,10 +126,10 @@ function init_sockets() {
                 }, settings["vanish_delay"]*1000);
                 break;
             case 'EVENT_GUESSED_WORD_WRONG_HANGMAN':
-                showNextImage();
+                showNextImage(JSON.parse(data["data"]));
                 break;
             case 'EVENT_GUESSED_LETTER_WRONG_HANGMAN':
-                showNextImage();
+                showNextImage(JSON.parse(data["data"]));
         }
     };
 
@@ -141,11 +141,16 @@ function init_sockets() {
     };
 }
 
-function showNextImage() {
-    turn += 1;
+function showNextImage(data) {
+    if("turn" in data){
+        turn = data["turn"]
+    }else{
+        turn += 1;
+    }
     var src;
     if(settings["nb_turns"] in imageOrder){
-        src ="hangman_images/" + imageOrder[settings["nb_turns"]][turn-1] + ".png"
+        var show_nb = Math.min(settings["nb_turns"], turn)-1;
+        src ="hangman_images/" + show_nb + ".png"
     }else{
         src = cutImages[turn-1];
     }
