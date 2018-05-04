@@ -69,7 +69,11 @@ function _prepareImages() {
 }
 
 function init_sockets() {
-    var socket = new WebSocket(serviceUrl);
+	var socket = new ReconnectingWebSocket(serviceUrl);
+	socket.maxReconnectInterval = 5000;
+	socket.reconnectDecay = 1.1;
+	socket.timeoutInterval = 1000;
+	
     //--------------------------
     // Open Event
     //--------------------------
