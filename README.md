@@ -2,6 +2,8 @@ view a formatted version on
 https://github.com/mithom/streamlabs_chatbot_hangman
 
 # streamlabs_chatbot_hangman
+if you like the script, you can always support me:
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](paypal.me/ThomasMichiels)
 
 ### this scripts adds the hangman minigame.
 the available commands are:
