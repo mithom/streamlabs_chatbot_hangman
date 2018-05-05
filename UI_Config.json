@@ -7,35 +7,35 @@
     "tooltip": "get your api key at http://developer.wordnik.com/",
     "group": "random word api config"
   },
-  "get_api_key":{
-    "type":"button",
-    "label":"get wordnik api key",
-    "tooltip":"opens a webpage to get the api key",
-    "function":"GetWordnikApiKey",
-    "wsevent":"",
-    "group":"random word api config"
+  "get_api_key": {
+    "type": "button",
+    "label": "get wordnik api key",
+    "tooltip": "opens a webpage to get the api key",
+    "function": "GetWordnikApiKey",
+    "wsevent": "",
+    "group": "random word api config"
   },
-  "use_file":{
-    "type":"checkbox",
-    "value":false,
-    "label":"use textfile for random words",
-    "tooltip":"if you want to provide a list of words to choose random words from, enable this",
-    "group":"random word api config"
+  "use_file": {
+    "type": "checkbox",
+    "value": false,
+    "label": "use textfile for random words",
+    "tooltip": "if you want to provide a list of words to choose random words from, enable this",
+    "group": "random word api config"
   },
-  "file_name":{
-    "type":"textbox",
-    "value":"words.txt",
-    "label":"random words file name",
-    "tooltip":"the file needs to be placed inside the hangman script folds (right click to open folder)",
-    "group":"random word api config"
+  "file_name": {
+    "type": "textbox",
+    "value": "words.txt",
+    "label": "random words file name",
+    "tooltip": "the file needs to be placed inside the hangman script folds (right click to open folder)",
+    "group": "random word api config"
   },
-  "open_folder":{
-    "type":"button",
-    "label":"open script folder",
-    "tooltip":"here you have to add the words file if you selected 'use textfile for random words'",
-    "function":"OpenScriptFolder",
-    "wsevent":"",
-    "group":"random word api config"
+  "open_folder": {
+    "type": "button",
+    "label": "open script folder",
+    "tooltip": "here you have to add the words file if you selected 'use textfile for random words'",
+    "function": "OpenScriptFolder",
+    "wsevent": "",
+    "group": "random word api config"
   },
   "use_different_guess_command": {
     "type": "checkbox",
@@ -71,60 +71,60 @@
     "tooltip": "extra info, eg: 10 (for Min_Hours) or: Rank1 (for Min_Rank)",
     "group": "config"
   },
-  "min_word_length":{
-    "type":"slider",
-    "label":"min word length",
+  "min_word_length": {
+    "type": "slider",
+    "label": "min word length",
     "value": 4,
     "min": 3,
     "max": 10,
-    "ticks":1,
-    "tooltip":"how long should a random word at least be",
-    "group":"config"
+    "ticks": 1,
+    "tooltip": "how long should a random word at least be",
+    "group": "config"
   },
-  "max_word_length":{
-    "type":"slider",
-    "label":"max word length",
+  "max_word_length": {
+    "type": "slider",
+    "label": "max word length",
     "value": 8,
     "min": 3,
     "max": 10,
-    "ticks":1,
-    "tooltip":"how long should a random word maximum be",
-    "group":"config"
+    "ticks": 1,
+    "tooltip": "how long should a random word maximum be",
+    "group": "config"
   },
-  "send_message_if_not_enough_points":{
+  "send_message_if_not_enough_points": {
     "type": "checkbox",
     "value": true,
     "label": "send warning",
     "tooltip": "send message if not enough currency points",
     "group": "config"
   },
-  "send_progress_after_guess":{
+  "send_progress_after_guess": {
     "type": "checkbox",
     "value": true,
     "label": "send progress",
     "tooltip": "send progress after each guess (disable when you want to show it on stream)",
     "group": "config"
   },
-  "auto_start_game":{
-    "type":"checkbox",
-    "value":false,
-    "label":"auto start games",
-    "tooltip":"automatically start a new game after a delay after last game finished",
-    "group":"config"
+  "auto_start_game": {
+    "type": "checkbox",
+    "value": false,
+    "label": "auto start games",
+    "tooltip": "automatically start a new game after a delay after last game finished",
+    "group": "config"
   },
-  "auto_delay":{
-    "type":"numberbox",
-    "value":60,
-    "label":"delay (seconds) before starting",
-    "tooltip":"time before starting a new after previous one finished",
-    "group":"config"
+  "auto_delay": {
+    "type": "numberbox",
+    "value": 60,
+    "label": "delay (seconds) before starting",
+    "tooltip": "time before starting a new after previous one finished",
+    "group": "config"
   },
-  "only_online":{
-    "type":"checkbox",
-    "value":true,
-    "label":"only auto start when online",
-    "tooltip":"should the streamer be online to automatically be start games",
-    "group":"config"
+  "only_online": {
+    "type": "checkbox",
+    "value": true,
+    "label": "only auto start when online",
+    "tooltip": "should the streamer be online to automatically be start games",
+    "group": "config"
   },
   "global_cd": {
     "type": "numberbox",
@@ -140,66 +140,66 @@
     "tooltip": "individual cooldown for making guesses",
     "group": "gameplay"
   },
-  "end_after_x_turns":{
+  "end_after_x_turns": {
     "type": "checkbox",
-    "value":false,
-    "label":"and after x turns?",
-    "tooltip":"should the amount of guesses be limited or not?",
-    "group":"gameplay"
+    "value": false,
+    "label": "and after x turns?",
+    "tooltip": "should the amount of guesses be limited or not?",
+    "group": "gameplay"
   },
-  "nb_turns":{
-    "type":"slider",
-    "label":"max_nb_turns",
+  "nb_turns": {
+    "type": "slider",
+    "label": "max_nb_turns",
     "value": 7,
     "min": 1,
     "max": 30,
-    "ticks":1,
-    "tooltip":"what is the maximum amount of guesses when they are limited",
-    "group":"gameplay"
+    "ticks": 1,
+    "tooltip": "what is the maximum amount of guesses when they are limited",
+    "group": "gameplay"
   },
-  "word_guess_counts_as_turn":{
+  "word_guess_counts_as_turn": {
     "type": "checkbox",
-    "value":true,
-    "label":"word guesses count as turns",
-    "tooltip":"false if word guesses are always allowed as long as turns are not up",
-    "group":"gameplay"
+    "value": true,
+    "label": "word guesses count as turns",
+    "tooltip": "false if word guesses are always allowed as long as turns are not up",
+    "group": "gameplay"
   },
-  "use_multiplier":{
-    "type":"checkbox",
-    "value":false,
-    "label":"award per occurrence",
-    "tooltip":"multiply the award with the amount of occurrences",
-    "group":"gameplay"
+  "use_multiplier": {
+    "type": "checkbox",
+    "value": false,
+    "label": "award per occurrence",
+    "tooltip": "multiply the award with the amount of occurrences",
+    "group": "gameplay"
   },
-  "guess_cost":{
+  "guess_cost": {
     "type": "numberbox",
     "label": "guess letter cost",
     "value": 0,
     "tooltip": "Cost for guessing a letter that is not a vowel",
     "group": "costs & rewards"
   },
-  "guess_word_cost":{
+  "guess_word_cost": {
     "type": "numberbox",
     "label": "guess word cost",
     "value": 0,
     "tooltip": "Cost for guessing a word",
     "group": "costs & rewards"
   },
-  "guess_vowel_cost":{
+  "guess_vowel_cost": {
     "type": "numberbox",
     "label": "guess vowel cost",
     "value": 0,
     "tooltip": "Cost for guessing a letter that is a vowel",
     "group": "costs & rewards"
   },
-  "find_letter_reward":{
+  "find_letter_reward": {
     "type": "numberbox",
     "label": "find letter reward",
     "value": 0,
     "tooltip": "this is not rewarded when the letter completes the word",
     "group": "costs & rewards"
   },
-  "finish_word_reward":{
+  "finish_word_reward": {
     "type": "numberbox",
     "label": "find or finish word reward",
     "value": 0,
@@ -234,47 +234,146 @@
     "tooltip": "without !, only for display purposes",
     "group": "command names"
   },
-  "vanish_delay":{
-    "type":"numberbox",
-    "value":10,
-    "label":"vanish delay (seconds)",
-    "tooltip":"delay after end of game before overlay vanishes",
-    "group":"overlay"
+  "in_progress_response": {
+    "type": "textbox",
+    "value": "current game is still in progress",
+    "label": "in progress",
+    "tooltip": "shown when a new game start is attempted while one is still running",
+    "group": "responses"
   },
-  "hangman_color":{
-    "type":"colorpicker",
-    "value":"rgba(0,0,0,255)",
-    "label":"hangman color",
-    "tooltip":"the color of the hangman that gets drawn in the overlay",
-    "group":"overlay"
+  "start_response": {
+    "type": "textbox",
+    "value": "a game of hangman has been started, start guessing now using {0} (letter)",
+    "label": "start",
+    "tooltip": "shown when a game is started\n{0} : the guess command",
+    "group": "responses"
   },
-  "not_show_me":{
-    "type":"checkbox",
-    "value":false,
-    "label":"do not show '/me'",
-    "tooltip":"not add /me before each message",
+  "guess_word_addition": {
+    "type": "textbox",
+    "value": "and {0}",
+    "label": "guess word addition",
+    "tooltip": "added to start_response when using guessWord\n{0} : the guessWord command",
+    "group": "responses"
+  },
+  "turn_limit_response": {
+    "type": "textbox",
+    "value": "the word has not been found within the turn limit, the solution was {0}",
+    "label": "turn limit reached",
+    "tooltip": "shown when max turns reached\n{0} : the (not found) solution",
+    "group": "responses"
+  },
+  "wrong_word_guess_response": {
+    "type": "textbox",
+    "value": "{0}, the word {1} is incorrect, better luck next time",
+    "label": "wrong word guess",
+    "tooltip": "shown when a word guess has been made and was wrong\n{0} : username\n{1} : guessed word",
+    "group": "responses"
+  },
+  "not_enough_points_response": {
+    "type": "textbox",
+    "value": "{0}, you don't have enough {1}, you need {2} and only have {3}",
+    "label": "not enough points",
+    "tooltip": "shown when user doesn't have enough points to guess on attempt\n{0} : username\n{1} : currency name\n{2} : needed points\n{3} current points",
+    "group": "responses"
+  },
+  "no_game_running_response": {
+    "type": "textbox",
+    "value": "{0}, there is currently no hangman game running, pls start one using {1}",
+    "label": "no game running",
+    "tooltip": "shown when guess is made but no game is running\n{0} : username\n{1} : start command",
+    "group": "responses"
+  },
+  "last_letter_found_response": {
+    "type": "textbox",
+    "value": "{0} found the last letter {1} of the word {2} and has been rewarded {3} {4} for finishing the word.",
+    "label": "last letter found",
+    "tooltip": "word found by finding last letter\n{0} : username\n{1} : letter\n{2} : solution\n{3} : rewarded amount\n{4} currency name",
+    "group": "responses"
+  },
+  "found_letter_response": {
+    "type": "textbox",
+    "value": "{0} found {1}, reward: {2} {3}.",
+    "label": "letter found",
+    "tooltip": "shown when a letter (that is not the last one) is found\n{0} : username\n{1} : found letter\n{2} : rewarded points\n{3} : currency name",
+    "group": "responses"
+  },
+  "letter_not_in_word_response": {
+    "type": "textbox",
+    "value": "{0}, {1} is not in the word, cost: {2}, {3}",
+    "label": "letter not in word",
+    "tooltip": "shown when a wrong letter has been guessed\n{0} : username\n{1} : guessed letter\n{2} : cost points\n{3} : currency name",
+    "group": "responses"
+  },
+  "found_correct_word_response": {
+    "type": "textbox",
+    "value": "{0} has found the correct word {1} and has been rewarded {2} {3}.",
+    "label": "found correct word",
+    "tooltip": "shown when a wordguess finds the word\n{0} : username\n{1} : found word\n{2} : rewarded points\n{3} : currency name",
+    "group": "responses"
+  },
+  "progress_response": {
+    "type": "textbox",
+    "value": "{0}",
+    "label": "progression",
+    "tooltip": "shown after every guess, if enabled\n{0} : progression",
+    "group": "responses"
+  },
+  "max_turns_prefix": {
+    "type": "textbox",
+    "value": "turn {0} / {1} : ",
+    "label": "max turns progression prefix",
+    "tooltip": "shown when end_after_x_turns enabled, shown before progression\n{0} current turn\n{1} max turns",
+    "group": "responses"
+  },
+  "vanish_delay": {
+    "type": "numberbox",
+    "value": 10,
+    "label": "vanish delay (seconds)",
+    "tooltip": "delay after end of game before overlay vanishes",
+    "group": "overlay"
+  },
+  "hangman_color": {
+    "type": "colorpicker",
+    "value": "rgba(0,0,0,255)",
+    "label": "hangman color",
+    "tooltip": "the color of the hangman that gets drawn in the overlay",
+    "group": "overlay"
+  },
+  "overlay_button": {
+    "type": "button",
+    "label": "open overlay folder",
+    "wsevent": "",
+    "function": "OpenOverlayFolder",
+    "tooltip": "opens overlay folder to add overlay to (SL)OBS",
+    "group": "overlay"
+  },
+  "not_show_me": {
+    "type": "checkbox",
+    "value": false,
+    "label": "do not show '/me'",
+    "tooltip": "not add /me before each message",
     "group": "youtube compatibility"
   },
-  "allow_chat_message":{
+  "allow_chat_message": {
     "type": "checkbox",
-    "value":false,
-    "label":"allow random word start in chat",
-    "tooltip":"because youtube does not support whispers",
-    "group":"youtube compatibility"
+    "value": false,
+    "label": "allow random word start in chat",
+    "tooltip": "because youtube does not support whispers",
+    "group": "youtube compatibility"
   },
-  "next_word":{
-    "type":"textbox",
-    "value":"",
-    "label":"word for next game",
+  "next_word": {
+    "type": "textbox",
+    "value": "",
+    "label": "word for next game",
     "tooltip": "leave this empty for a random word",
     "group": "youtube compatibility"
   },
-  "button_start":{
-    "type":"button",
-    "label":"Start game (save settings beforehand)",
-    "tooltip":"does the same as whispering '!startHangman' to chatbot",
-    "function":"StartHangmanButton",
-    "wsevent":"EVENT_START_HANGMAN",
-    "group":"youtube compatibility"
+  "button_start": {
+    "type": "button",
+    "label": "Start game (save settings beforehand)",
+    "tooltip": "does the same as whispering '!startHangman' to chatbot",
+    "function": "StartHangmanButton",
+    "wsevent": "EVENT_START_HANGMAN",
+    "group": "youtube compatibility"
   }
 }

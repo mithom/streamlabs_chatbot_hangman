@@ -6,11 +6,11 @@ import codecs
 import re
 import os
 import clr
+
 clr.AddReference("IronPython.Modules.dll")
 import urllib
 import time
 import random
-
 
 # ---------------------------------------
 #   [Required]  Script Information
@@ -19,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.6.0"
+Version = "1.7.0"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -92,6 +92,22 @@ class Settings(object):
             self.guess_command = "!guess"
             self.guess_word_command = "!guessWord"
             self.currency_name = "points"
+
+            # responses
+            self.in_progress_response = 'current game is still in progress'
+            self.start_response = "a game of hangman has been started, start guessing now using {0} (letter)"
+            self.guess_word_addition = " and {0}"
+            self.turn_limit_response = 'the word has not been found within the turn limit, the solution was {0}'
+            self.wrong_word_guess_response = '{0}, the word {1} is incorrect, better luck next time'
+            self.not_enough_points_response = "{0}, you don't have enough {1}, you need {2} and only have {3}"
+            self.no_game_running_response = '{0}, there is currently no hangman game running, pls start one using {1}'
+            self.last_letter_found_response = \
+                '{0} found the last letter {1} of the word {2} and has been rewarded {3} {4} for finishing the word.'
+            self.found_letter_response = "{0} found {1}, reward: {2} {3}."
+            self.letter_not_in_word_response = "{0}, {1} is not in the word, cost: {2}, {3}"
+            self.found_correct_word_response = "{0} has found the correct word {1} and has been rewarded {2} {3}."
+            self.progress_response = "{0}"
+            self.max_turns_prefix = "turn {0} / {1} : "
 
             # Overlay
             self.vanish_delay = 10
@@ -294,7 +310,7 @@ def load_game():
             m_GameRunning = False
         else:
             m_GameRunning = True
-            to_send = 'current game is still in progress'
+            to_send = ScriptSettings.in_progress_response
             Parent.SendStreamMessage(format_message(to_send))
             send_progress()
     except:
@@ -404,10 +420,9 @@ def start_game_command(user, **kwargs):
             m_CurrentSolution = word.lower().replace(" ", "-").replace("_", "-")
             m_CurrentWord = "_ " * len(word)
             save_game()
-            to_send = "a game of hangman has been started, start guessing now using %s {letter}" % \
-                      ScriptSettings.guess_command
+            to_send = ScriptSettings.start_response.format(ScriptSettings.guess_command)
             if ScriptSettings.use_different_guess_command:
-                to_send += " and %s" % ScriptSettings.guess_word_command
+                to_send += ScriptSettings.guess_word_addition.format(ScriptSettings.guess_word_command)
             Parent.SendStreamMessage(format_message(to_send))
             send_progress()
         else:
@@ -454,7 +469,7 @@ def add_turn(letter=None):
     m_turns += 1
     if ScriptSettings.end_after_x_turns and m_turns >= ScriptSettings.nb_turns:
         if not is_finished():
-            to_send = 'the word has not been found within the turn limit, the solution was %s' % m_CurrentSolution
+            to_send = ScriptSettings.turn_limit_response.format(m_CurrentSolution)
             Parent.SendStreamMessage(format_message(to_send))
         end_game()
     save_game(letter)
@@ -471,10 +486,10 @@ def add_cooldown(user):
 
 def guess_word(user, word):
     global m_CurrentWord
+    username = Parent.GetDisplayName(user)
     if m_GameRunning:
         if not is_on_cooldown(user):
             add_cooldown(user)
-            username = Parent.GetDisplayName(user)
             if Parent.RemovePoints(user, username, ScriptSettings.guess_word_cost):
                 word = word.lower()
                 if word == m_CurrentSolution:
@@ -483,24 +498,24 @@ def guess_word(user, word):
                     send_progress()
                     end_game()
                 else:
-                    to_send = '%s, the word %s is incorrect, better luck next time' % (username, word)
+                    to_send = ScriptSettings.wrong_word_guess_response.format(username, word)
                     Parent.SendStreamMessage(format_message(to_send))
                     if ScriptSettings.word_guess_counts_as_turn:
-                        Parent.BroadcastWsEvent("EVENT_GUESSED_WORD_WRONG_HANGMAN", json.dumps({"turn": m_turns+1}))
+                        Parent.BroadcastWsEvent("EVENT_GUESSED_WORD_WRONG_HANGMAN", json.dumps({"turn": m_turns + 1}))
                         add_turn()
             elif ScriptSettings.send_message_if_not_enough_points:
                 current_user_points = Parent.GetPoints(user)
-                to_send = "%s, you don't have enough %s, you need %i and only have %i" % (
+                to_send = ScriptSettings.not_enough_points_response.format(
                     username, ScriptSettings.currency_name, ScriptSettings.guess_word_cost, current_user_points)
                 Parent.SendStreamMessage(format_message(to_send))
     else:
-        to_send = 'there is currently no hangman game running, pls start one using %s' % \
-                  ScriptSettings.start_game_command
+        to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
         Parent.SendStreamMessage(format_message(to_send))
 
 
 def guess_letter(user, letter):
     if len(letter) == 1:
+        username = Parent.GetDisplayName(user)
         if m_GameRunning:
             if not is_on_cooldown(user):
                 add_cooldown(user)
@@ -509,15 +524,15 @@ def guess_letter(user, letter):
                     cost = ScriptSettings.guess_vowel_cost
                 else:
                     cost = ScriptSettings.guess_cost
-                username = Parent.GetDisplayName(user)
                 if Parent.RemovePoints(user, username, cost):
                     if letter in m_CurrentSolution and letter not in m_CurrentWord:
                         fill_in_letter(letter)
                         reward(user, letter)
                     else:
-                        to_send = "%s, %s is not in the word" % (username, letter)
+                        to_send = ScriptSettings.letter_not_in_word_response.format(username, letter, cost,
+                                                                                    ScriptSettings.currency_name)
                         Parent.SendStreamMessage(format_message(to_send))
-                        Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"turn": m_turns+1}))
+                        Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"turn": m_turns + 1}))
                         if letter in m_UsedLetters:
                             add_turn()
                         else:
@@ -529,11 +544,11 @@ def guess_letter(user, letter):
                         send_progress()
                 elif ScriptSettings.send_message_if_not_enough_points:
                     current_user_points = Parent.GetPoints(user)
-                    to_send = "%s, you don't have enough %s, you need %i and only have %i" % (
+                    to_send = ScriptSettings.not_enough_points_response.format(
                         username, ScriptSettings.currency_name, ScriptSettings.guess_cost, current_user_points)
                     Parent.SendStreamMessage(format_message(to_send))
         else:
-            to_send = 'no hangman game running (%s)' % ScriptSettings.start_game_command
+            to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
             Parent.SendStreamMessage(format_message(to_send))
 
 
@@ -553,20 +568,24 @@ def reward(user, letter_or_word):
     if len(letter_or_word) == 1:
         if is_finished():
             Parent.AddPoints(user, username, ScriptSettings.finish_word_reward)
-            Parent.SendStreamMessage(
-                format_message("%s found the last letter (%s) and has been rewarded %s %s for finishing the word." % (
-                    username, letter_or_word, ScriptSettings.finish_word_reward, ScriptSettings.currency_name)))
+            to_send = ScriptSettings.last_letter_found_response.format(username, letter_or_word, m_CurrentSolution,
+                                                                       ScriptSettings.finish_word_reward,
+                                                                       ScriptSettings.currency_name)
+            Parent.SendStreamMessage(format_message(to_send))
         else:
             points = ScriptSettings.find_letter_reward
             if ScriptSettings.use_multiplier:
                 points *= m_CurrentSolution.count(letter_or_word)
             Parent.AddPoints(user, username, points)
-            Parent.SendStreamMessage(format_message("%s found %s, reward: %s %s." % (
-                username, letter_or_word, points, ScriptSettings.currency_name)))
+            to_send = ScriptSettings.found_letter_response.format(username, letter_or_word, points,
+                                                                  ScriptSettings.currency_name)
+            Parent.SendStreamMessage(format_message(to_send))
     else:
         Parent.AddPoints(user, username, ScriptSettings.finish_word_reward)
-        Parent.SendStreamMessage(format_message("%s has found the correct word and has been rewarded %s %s." % (
-            username, ScriptSettings.finish_word_reward, ScriptSettings.currency_name)))
+        to_send = ScriptSettings.found_correct_word_response.format(username, m_CurrentSolution,
+                                                                    ScriptSettings.finish_word_reward,
+                                                                    ScriptSettings.currency_name)
+        Parent.SendStreamMessage(format_message(to_send))
 
 
 def format_message(to_send):
@@ -577,9 +596,9 @@ def format_message(to_send):
 
 def send_progress():
     if ScriptSettings.send_progress_after_guess:
-        to_send = m_CurrentWord
+        to_send = ScriptSettings.progress_response.format(m_CurrentWord)
         if ScriptSettings.end_after_x_turns:
-            to_send = "turn %i / %i : " % (m_turns, ScriptSettings.nb_turns) + to_send
+            to_send = ScriptSettings.max_turns_prefix.format(m_turns, ScriptSettings.nb_turns) + to_send
         Parent.SendStreamMessage(format_message(to_send))
 
 
@@ -663,3 +682,7 @@ def GetWordnikApiKey():
 
 def OpenScriptFolder():
     os.startfile(os.path.dirname(__file__))
+
+
+def OpenOverlayFolder():
+    os.startfile(os.path.join(os.path.dirname(__file__), "overlay"))

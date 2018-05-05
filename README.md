@@ -31,6 +31,7 @@ They will be kept in sync in real-time
 ## lots of customisation options
 * global & user cooldown
 * command names
+* custom messages
 * min & max word length for random words
 * costs & rewards
 * max turns & what counts as turn
@@ -44,10 +45,11 @@ They will be kept in sync in real-time
 * how long overlay lingers after finishing game
 
 ### To be expected:
-* custom messages
+* option for used letters to not count as wrong guesses (no double wrong)
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
 * add picture of streamer as head of overlay
+* option to end game if nobody found something for a while (probably not)
 * your feature request here? mail me @ mi_thom@hotmail.com
 
 ## see it in action?
@@ -59,6 +61,8 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.7.0: added customisable messages
+
 v 1.6.0: keep track of used letters
 
 v 1.5.1: make overlay robuster in multiple ways
