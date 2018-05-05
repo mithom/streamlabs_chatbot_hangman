@@ -15,18 +15,22 @@ the available commands are:
 if you want to be able to use the game with random words, request an api-key at [wordnik](http://developer.wordnik.com/).
 Or mail me to get mu api-key after verification of usage.
 
-## Youtube compatibility mode
-in the settings you can enable that !startHangman {number} can also be used in chat instead of in whisper.
-In addition you can fill in a word, number (or leave empty) in the settings, press save settings and then press
- 'start game' to start a game without the whole chat knowing the word.
-
-### Files to read for showing on stream
+### Overlay options
 They will be kept in sync in real-time
 * unsolvedWord.txt
 * turns.txt
 * solution.txt
 * usedLetters.txt
-* needs to be shown with browser plugin: overlay/overlay.html
+* overlay/overlay.html
+
+the overlay.html needs to be shown as a browser source (local file). For this to work you need to insert api key into
+the script by right clicking on it and selecting 'insert API_Key'. Mind! this is not the same api key as the wordnik 
+Api Key.
+
+## Youtube compatibility mode
+in the settings you can enable that !startHangman {number} can also be used in chat instead of in whisper.
+In addition you can fill in a word, number (or leave empty) in the settings, press save settings and then press
+ 'start game' to start a game without the whole chat knowing the word.
 
 ## lots of customisation options
 * global & user cooldown

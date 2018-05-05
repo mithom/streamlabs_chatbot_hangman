@@ -17,7 +17,7 @@ import random
 # ---------------------------------------
 ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
-Description = "play the hangman game in chat"
+Description = "INSERT API_KEY + (and wordnik apikey) play the hangman game in chat"
 Creator = "mi_thom"
 Version = "1.7.0"
 
