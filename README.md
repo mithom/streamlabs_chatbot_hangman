@@ -47,9 +47,9 @@ In addition you can fill in a word, number (or leave empty) in the settings, pre
 * random words retrieved from api or given file
 * color of hangman overlay
 * how long overlay lingers after finishing game
+* option to ignore already used/guessed letters
 
 ### To be expected:
-* option for used letters to not count as wrong guesses (no double wrong)
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
 * add picture of streamer as head of overlay
@@ -65,6 +65,8 @@ streamers that are using this script:
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 
 ### changelog:
+v 1.7.1: added option to ignore already used/guessed letters
+
 v 1.7.0: added customisable messages
 
 v 1.6.0: keep track of used letters

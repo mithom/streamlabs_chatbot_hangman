@@ -171,6 +171,20 @@
     "tooltip": "multiply the award with the amount of occurrences",
     "group": "gameplay"
   },
+  "ignore_used":{
+    "type":"checkbox",
+    "value":false,
+    "label":"ignore already used letters",
+    "tooltip":"do not count already used letters/guesses as a turn",
+    "group":"gameplay"
+  },
+  "send_response_if_ignored":{
+    "type":"checkbox",
+    "value":true,
+    "label":"send response on already used letter",
+    "tooltip":"send a response when ignoring a guess because of already used letter/guess",
+    "group":"gameplay"
+  },
   "guess_cost": {
     "type": "numberbox",
     "label": "guess letter cost",
@@ -323,6 +337,13 @@
     "value": "turn {0} / {1} : ",
     "label": "max turns progression prefix",
     "tooltip": "shown when end_after_x_turns enabled, shown before progression\n{0} current turn\n{1} max turns",
+    "group": "responses"
+  },
+  "ignore_response": {
+    "type": "textbox",
+    "value": "{0}, the letter {1} has already been used",
+    "label": "already used letter ignore",
+    "tooltip": "shown when a letter guess is ignore because it was already used\n{0} username \n{1} letter",
     "group": "responses"
   },
   "vanish_delay": {

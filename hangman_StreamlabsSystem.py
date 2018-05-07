@@ -19,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "INSERT API_KEY + (and wordnik apikey) play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.7.0"
+Version = "1.7.1"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -79,6 +79,8 @@ class Settings(object):
             self.nb_turns = 7
             self.word_guess_counts_as_turn = True
             self.use_multiplier = False
+            self.ignore_used = False
+            self.send_response_if_ignored = True
 
             # Command costs & rewards
             self.guess_cost = 0
@@ -108,6 +110,7 @@ class Settings(object):
             self.found_correct_word_response = "{0} has found the correct word {1} and has been rewarded {2} {3}."
             self.progress_response = "{0}"
             self.max_turns_prefix = "turn {0} / {1} : "
+            self.ignore_response = "{0}, the letter {1} has already been used"
 
             # Overlay
             self.vanish_delay = 10
@@ -518,34 +521,38 @@ def guess_letter(user, letter):
         username = Parent.GetDisplayName(user)
         if m_GameRunning:
             if not is_on_cooldown(user):
-                add_cooldown(user)
-                letter = letter.lower()
-                if letter in m_vowels:
-                    cost = ScriptSettings.guess_vowel_cost
-                else:
-                    cost = ScriptSettings.guess_cost
-                if Parent.RemovePoints(user, username, cost):
-                    if letter in m_CurrentSolution and letter not in m_CurrentWord:
-                        fill_in_letter(letter)
-                        reward(user, letter)
+                if not (ScriptSettings.ignore_used and (letter in m_UsedLetters or letter in m_CurrentWord)):
+                    add_cooldown(user)
+                    letter = letter.lower()
+                    if letter in m_vowels:
+                        cost = ScriptSettings.guess_vowel_cost
                     else:
-                        to_send = ScriptSettings.letter_not_in_word_response.format(username, letter, cost,
-                                                                                    ScriptSettings.currency_name)
-                        Parent.SendStreamMessage(format_message(to_send))
-                        Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"turn": m_turns + 1}))
-                        if letter in m_UsedLetters:
-                            add_turn()
+                        cost = ScriptSettings.guess_cost
+                    if Parent.RemovePoints(user, username, cost):
+                        if letter in m_CurrentSolution and letter not in m_CurrentWord:
+                            fill_in_letter(letter)
+                            reward(user, letter)
                         else:
-                            m_UsedLetters.append(letter)
-                            add_turn(letter)
-                    if is_finished():
-                        end_game()
-                    else:
-                        send_progress()
-                elif ScriptSettings.send_message_if_not_enough_points:
-                    current_user_points = Parent.GetPoints(user)
-                    to_send = ScriptSettings.not_enough_points_response.format(
-                        username, ScriptSettings.currency_name, ScriptSettings.guess_cost, current_user_points)
+                            to_send = ScriptSettings.letter_not_in_word_response.format(username, letter, cost,
+                                                                                        ScriptSettings.currency_name)
+                            Parent.SendStreamMessage(format_message(to_send))
+                            Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"turn": m_turns + 1}))
+                            if letter in m_UsedLetters:
+                                add_turn()
+                            else:
+                                m_UsedLetters.append(letter)
+                                add_turn(letter)
+                        if is_finished():
+                            end_game()
+                        else:
+                            send_progress()
+                    elif ScriptSettings.send_message_if_not_enough_points:
+                        current_user_points = Parent.GetPoints(user)
+                        to_send = ScriptSettings.not_enough_points_response.format(
+                            username, ScriptSettings.currency_name, ScriptSettings.guess_cost, current_user_points)
+                        Parent.SendStreamMessage(format_message(to_send))
+                elif ScriptSettings.ignore_used and ScriptSettings.send_response_if_ignored:
+                    to_send = ScriptSettings.ignore_response.format(username, letter)
                     Parent.SendStreamMessage(format_message(to_send))
         else:
             to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
