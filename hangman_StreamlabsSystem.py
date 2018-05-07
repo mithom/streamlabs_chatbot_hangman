@@ -470,7 +470,7 @@ def guess_word_or_letter(user, word):
 def add_turn(letter=None):
     global m_turns
     m_turns += 1
-    if ScriptSettings.end_after_x_turns and m_turns >= ScriptSettings.nb_turns:
+    if ScriptSettings.end_after_x_turns and m_turns >= int(ScriptSettings.nb_turns):
         if not is_finished():
             to_send = ScriptSettings.turn_limit_response.format(m_CurrentSolution)
             Parent.SendStreamMessage(format_message(to_send))
@@ -605,7 +605,7 @@ def send_progress():
     if ScriptSettings.send_progress_after_guess:
         to_send = ScriptSettings.progress_response.format(m_CurrentWord)
         if ScriptSettings.end_after_x_turns:
-            to_send = ScriptSettings.max_turns_prefix.format(m_turns, ScriptSettings.nb_turns) + to_send
+            to_send = ScriptSettings.max_turns_prefix.format(m_turns, int(ScriptSettings.nb_turns)) + to_send
         Parent.SendStreamMessage(format_message(to_send))
 
 
