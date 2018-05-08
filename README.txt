@@ -51,7 +51,7 @@ In addition you can fill in a word, number (or leave empty) in the settings, pre
 * how long overlay lingers after finishing game
 * option to ignore already used/guessed letters
 
-### To be expected:
+### requested features (in no particular order):
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
 * add picture of streamer as head of overlay
@@ -65,6 +65,7 @@ streamers that are using this script:
 * [Billie_bob](https://www.twitch.tv/billie_bob)
 * [mrvideofreak](https://www.twitch.tv/mrvideofreak)
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
+* [「RizakH」](https://www.twitch.tv/rizakh)
 
 ### changelog:
 v 1.7.1: added option to ignore already used/guessed letters

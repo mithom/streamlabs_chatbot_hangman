@@ -86,7 +86,7 @@
     "label": "max word length",
     "value": 8,
     "min": 3,
-    "max": 10,
+    "max": 20,
     "ticks": 1,
     "tooltip": "how long should a random word maximum be",
     "group": "config"

@@ -2,7 +2,6 @@
 // Variables
 //--------------------------
 var serviceUrl = "ws://127.0.0.1:3337/streamlabs";
-var s = document.styleSheets[1];
 var imageOrder = {
     1: [10],
     2: [3, 10],
@@ -33,9 +32,6 @@ function reload_settings(json_data) {
 var turn = 0;
 
 function prepareImages() {
-    _prepareImages();
-}
-function _prepareImages() {
     cutImages = new Array(settings["nb_turns"]);
     for (var y = 0; y < settings["nb_turns"]; ++y) {
 		var img = document.createElement("img");
@@ -184,21 +180,3 @@ function add_hangman_image(src) {
 function getRGBA() {
     return settings["hangman_color"].slice(5, -1).split(',').map(x => parseInt(x));
 }
-
-function changeStylesheetRule(stylesheet, selector, property, value) {
-    selector = selector.toLowerCase();
-    property = property.toLowerCase();
-    value = value.toLowerCase();
-
-    for (var i = 0; i < stylesheet.cssRules.length; i++) {
-        var rule = stylesheet.cssRules[i];
-        if (rule.selectorText === selector) {
-            rule.style[property] = value;
-            return;
-        }
-    }
-
-    stylesheet.insertRule(selector + " { " + property + ": " + value + "; }", 0);
-}
-
-// changeStylesheetRule(s, "body", "color", "rebeccapurple");
