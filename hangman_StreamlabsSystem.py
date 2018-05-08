@@ -421,7 +421,7 @@ def start_game_command(user, **kwargs):
                 Parent.SendStreamWhisper(user, "failed to retrieve a random word, check your connection & api-key")
                 return
             m_CurrentSolution = word.lower().replace(" ", "-").replace("_", "-")
-            m_CurrentWord = "_ " * len(word)
+            m_CurrentWord = " ".join(["_" if x != "-" else "-" for x in word])
             save_game()
             to_send = ScriptSettings.start_response.format(ScriptSettings.guess_command)
             if ScriptSettings.use_different_guess_command:
