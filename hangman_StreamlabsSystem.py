@@ -19,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "INSERT API_KEY + (and wordnik apikey) play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.7.1"
+Version = "1.7.2"
 
 # ---------------------------------------
 #   Set Global Variables

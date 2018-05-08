@@ -50,6 +50,7 @@ In addition you can fill in a word, number (or leave empty) in the settings, pre
 * color of hangman overlay
 * how long overlay lingers after finishing game
 * option to ignore already used/guessed letters
+* shown letters
 
 ### requested features (in no particular order):
 * option to lock out on wrong (word) guess
@@ -68,6 +69,8 @@ streamers that are using this script:
 * [「RizakH」](https://www.twitch.tv/rizakh)
 
 ### changelog:
+v 1.7.2: added shown_letters option
+
 v 1.7.1: added option to ignore already used/guessed letters
 
 v 1.7.0: added customisable messages
