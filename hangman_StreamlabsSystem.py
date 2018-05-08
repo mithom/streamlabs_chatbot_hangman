@@ -438,7 +438,7 @@ def get_random_word():
     else:
         words_api = WordsApi(m_Client)
         return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(ScriptSettings.min_word_length),
-                                       maxLength=int(ScriptSettings.max_word_length), minCorpusCount=200)
+                                       maxLength=int(ScriptSettings.max_word_length), minCorpusCount=500)
 
 
 def get_random_word_with_length(length):
@@ -447,7 +447,7 @@ def get_random_word_with_length(length):
     else:
         words_api = WordsApi(m_Client)
         return words_api.getRandomWord(hasDictionaryDef=True, minLength=int(length), maxLength=int(length),
-                                       minCorpusCount=200)
+                                       minCorpusCount=500)
 
 
 def get_random_word_from_file(min_length, max_length):
