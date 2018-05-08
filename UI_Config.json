@@ -185,6 +185,13 @@
     "tooltip":"send a response when ignoring a guess because of already used letter/guess",
     "group":"gameplay"
   },
+  "shown_letters":{
+    "type":"textbox",
+    "value":"-",
+    "label":"shown letters",
+    "tooltip":"put all letters/symbols that need to be shown in here",
+    "group":"gameplay"
+  },
   "guess_cost": {
     "type": "numberbox",
     "label": "guess letter cost",

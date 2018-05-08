@@ -81,6 +81,7 @@ class Settings(object):
             self.use_multiplier = False
             self.ignore_used = False
             self.send_response_if_ignored = True
+            self.shown_letters = "-"
 
             # Command costs & rewards
             self.guess_cost = 0
@@ -421,7 +422,7 @@ def start_game_command(user, **kwargs):
                 Parent.SendStreamWhisper(user, "failed to retrieve a random word, check your connection & api-key")
                 return
             m_CurrentSolution = word.lower().replace(" ", "-").replace("_", "-")
-            m_CurrentWord = " ".join(["_" if x != "-" else "-" for x in word])
+            m_CurrentWord = " ".join(["_" if x not in ScriptSettings.shown_letters else x for x in word])
             save_game()
             to_send = ScriptSettings.start_response.format(ScriptSettings.guess_command)
             if ScriptSettings.use_different_guess_command:
