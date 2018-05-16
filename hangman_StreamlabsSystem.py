@@ -19,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "INSERT API_KEY + (and wordnik apikey) play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.7.2"
+Version = "1.7.3"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -57,7 +57,7 @@ class Settings(object):
         except:
             # random_words
             self.api_key = "Your key here"
-            self.use_file = False
+            self.mix_api_file_word = 100
             self.file_name = "words.txt"
 
             # Config
@@ -121,6 +121,9 @@ class Settings(object):
             self.not_show_me = False
             self.allow_chat_message = False
             self.next_word = ""
+        if "use_file" in self.__dict__:
+            self.mix_api_file_word = 100*(not self.__dict__["use_file"])
+            del self.__dict__["use_file"]
         self.save(settingsfile)
 
     def reload(self, jsondata):
@@ -133,9 +136,9 @@ class Settings(object):
         """ Save settings contained within to .json and .js settings files. """
         try:
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="w+") as f:
-                json.dump(self.__dict__, f, encoding="utf-8")
+                json.dump(self.__dict__, f, encoding="utf-8", ensure_ascii=False)
             with codecs.open(settingsfile.replace("json", "js"), encoding="utf-8-sig", mode="w+") as f:
-                f.write("var settings = {0};".format(json.dumps(self.__dict__, encoding='utf-8')))
+                f.write("var settings = {0};".format(json.dumps(self.__dict__, encoding='utf-8', ensure_ascii=False)))
         except:
             Parent.Log(ScriptName, "Failed to save settings to file.")
         return
@@ -325,9 +328,7 @@ def load_random_words():
     global m_random_words_from_file
     if ScriptSettings.use_file:
         with open(os.path.join(os.path.dirname(__file__), ScriptSettings.file_name), "r") as f:
-            m_random_words_from_file = f.readlines()
-        for i in xrange(len(m_random_words_from_file)):
-            m_random_words_from_file[i] = m_random_words_from_file[i].strip()
+            m_random_words_from_file = [line.strip() for line in f if line.strip()]
 
 
 # ---------------------------------------
@@ -434,7 +435,7 @@ def start_game_command(user, **kwargs):
 
 
 def get_random_word():
-    if ScriptSettings.use_file:
+    if random.randint(0, 99) < ScriptSettings.mix_api_file_word:
         return get_random_word_from_file(ScriptSettings.min_word_length, ScriptSettings.max_word_length)
     else:
         words_api = WordsApi(m_Client)
@@ -443,7 +444,7 @@ def get_random_word():
 
 
 def get_random_word_with_length(length):
-    if ScriptSettings.use_file:
+    if random.randint(0, 99) < ScriptSettings.mix_api_file_word:
         return get_random_word_from_file(length, length)
     else:
         words_api = WordsApi(m_Client)

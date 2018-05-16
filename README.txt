@@ -53,6 +53,7 @@ In addition you can fill in a word, number (or leave empty) in the settings, pre
 * shown letters
 
 ### requested features (in no particular order):
+* remember used words so they don't come again
 * option to lock out on wrong (word) guess
 * option to add timer before which the next guess has to happen / the words need to be found
 * add picture of streamer as head of overlay
@@ -69,6 +70,10 @@ streamers that are using this script:
 * [「RizakH」](https://www.twitch.tv/rizakh)
 
 ### changelog:
+v 1.7.3:
+* do not reset on ascii symbols
+* ability to mix file words with api words
+
 v 1.7.2: added shown_letters option
 
 v 1.7.1: added option to ignore already used/guessed letters

@@ -15,11 +15,14 @@
     "wsevent": "",
     "group": "random word api config"
   },
-  "use_file": {
-    "type": "checkbox",
-    "value": false,
-    "label": "use textfile for random words",
-    "tooltip": "if you want to provide a list of words to choose random words from, enable this",
+  "mix_api_file_word": {
+    "type": "slider",
+    "label": "mix api and file words",
+    "value": 100,
+    "min": 0,
+    "max": 100,
+    "ticks": 1,
+    "tooltip": "% of words coming from the API\n100% = API only\n0% = file only",
     "group": "random word api config"
   },
   "file_name": {
