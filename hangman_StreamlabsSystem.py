@@ -326,9 +326,12 @@ def load_game():
 
 def load_random_words():
     global m_random_words_from_file
-    if ScriptSettings.use_file:
-        with open(os.path.join(os.path.dirname(__file__), ScriptSettings.file_name), "r") as f:
-            m_random_words_from_file = [line.strip() for line in f if line.strip()]
+    try:
+        if int(ScriptSettings.mix_api_file_word) != 100:
+            with open(os.path.join(os.path.dirname(__file__), ScriptSettings.file_name), "r") as f:
+                m_random_words_from_file = [line.strip() for line in f if line.strip()]
+    except:
+        m_random_words_from_file = ["failed-to-read-file", "failed-to-read", "failed"]
 
 
 # ---------------------------------------
@@ -435,7 +438,7 @@ def start_game_command(user, **kwargs):
 
 
 def get_random_word():
-    if random.randint(0, 99) < ScriptSettings.mix_api_file_word:
+    if random.randint(1, 100) > int(ScriptSettings.mix_api_file_word):
         return get_random_word_from_file(ScriptSettings.min_word_length, ScriptSettings.max_word_length)
     else:
         words_api = WordsApi(m_Client)
@@ -444,7 +447,7 @@ def get_random_word():
 
 
 def get_random_word_with_length(length):
-    if random.randint(0, 99) < ScriptSettings.mix_api_file_word:
+    if random.randint(1, 100) > int(ScriptSettings.mix_api_file_word):
         return get_random_word_from_file(length, length)
     else:
         words_api = WordsApi(m_Client)
