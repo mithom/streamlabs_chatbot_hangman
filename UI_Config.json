@@ -108,6 +108,13 @@
     "tooltip": "send progress after each guess (disable when you want to show it on stream)",
     "group": "config"
   },
+  "whisper_guess_responses": {
+    "type": "checkbox",
+    "value": false,
+    "label": "whisper responses to guesses",
+    "tooltip": "message sent as reaction on a guess will be whispered. Excluding end of game",
+    "group": "config"
+  },
   "auto_start_game": {
     "type": "checkbox",
     "value": false,
