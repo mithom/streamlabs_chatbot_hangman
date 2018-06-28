@@ -319,7 +319,7 @@ def load_game():
         else:
             m_GameRunning = True
             to_send = ScriptSettings.in_progress_response
-            Parent.SendStreamMessage(format_message(to_send))
+            send_message(to_send)
             send_progress()
     except:
         Parent.Log(ScriptName, "failed to load current game, game has been reset")
@@ -432,7 +432,7 @@ def start_game_command(user, **kwargs):
             to_send = ScriptSettings.start_response.format(ScriptSettings.guess_command)
             if ScriptSettings.use_different_guess_command:
                 to_send += ScriptSettings.guess_word_addition.format(ScriptSettings.guess_word_command)
-            Parent.SendStreamMessage(format_message(to_send))
+            send_message(to_send)
             send_progress()
         else:
             Parent.SendStreamWhisper(user, "current game still in progress")
@@ -479,7 +479,7 @@ def add_turn(letter=None):
     if ScriptSettings.end_after_x_turns and m_turns >= int(ScriptSettings.nb_turns):
         if not is_finished():
             to_send = ScriptSettings.turn_limit_response.format(m_CurrentSolution)
-            Parent.SendStreamMessage(format_message(to_send))
+            send_message(to_send)
         end_game()
     save_game(letter)
 
@@ -508,7 +508,7 @@ def guess_word(user, word):
                     end_game()
                 else:
                     to_send = ScriptSettings.wrong_word_guess_response.format(username, word)
-                    Parent.SendStreamMessage(format_message(to_send, whisper=user))
+                    send_message(to_send, whisper=user)
                     if ScriptSettings.word_guess_counts_as_turn:
                         Parent.BroadcastWsEvent("EVENT_GUESSED_WORD_WRONG_HANGMAN", json.dumps({"turn": m_turns + 1}))
                         add_turn()
@@ -516,10 +516,10 @@ def guess_word(user, word):
                 current_user_points = Parent.GetPoints(user)
                 to_send = ScriptSettings.not_enough_points_response.format(
                     username, ScriptSettings.currency_name, ScriptSettings.guess_word_cost, current_user_points)
-                Parent.SendStreamMessage(format_message(to_send, whisper=user))
+                send_message(to_send, whisper=user)
     else:
         to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
-        Parent.SendStreamMessage(format_message(to_send, whisper=user))
+        send_message(to_send, whisper=user)
 
 
 def guess_letter(user, letter):
@@ -541,7 +541,7 @@ def guess_letter(user, letter):
                         else:
                             to_send = ScriptSettings.letter_not_in_word_response.format(username, letter, cost,
                                                                                         ScriptSettings.currency_name)
-                            Parent.SendStreamMessage(format_message(to_send, whisper=user))
+                            send_message(to_send, whisper=user)
                             Parent.BroadcastWsEvent("EVENT_GUESSED_LETTER_WRONG_HANGMAN", json.dumps({"turn": m_turns + 1}))
                             if letter in m_UsedLetters:
                                 add_turn()
@@ -556,13 +556,13 @@ def guess_letter(user, letter):
                         current_user_points = Parent.GetPoints(user)
                         to_send = ScriptSettings.not_enough_points_response.format(
                             username, ScriptSettings.currency_name, ScriptSettings.guess_cost, current_user_points)
-                        Parent.SendStreamMessage(format_message(to_send, whisper=user))
+                        send_message(to_send, whisper=user)
                 elif ScriptSettings.ignore_used and ScriptSettings.send_response_if_ignored:
                     to_send = ScriptSettings.ignore_response.format(username, letter)
-                    Parent.SendStreamMessage(format_message(to_send, whisper=user))
+                    send_message(to_send, whisper=user)
         else:
             to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
-            Parent.SendStreamMessage(format_message(to_send, whisper=user))
+            send_message(to_send, whisper=user)
 
 
 def fill_in_letter(letter):
@@ -584,7 +584,7 @@ def reward(user, letter_or_word):
             to_send = ScriptSettings.last_letter_found_response.format(username, letter_or_word, m_CurrentSolution,
                                                                        ScriptSettings.finish_word_reward,
                                                                        ScriptSettings.currency_name)
-            Parent.SendStreamMessage(format_message(to_send))
+            send_message(to_send)
         else:
             points = ScriptSettings.find_letter_reward
             if ScriptSettings.use_multiplier:
@@ -592,21 +592,20 @@ def reward(user, letter_or_word):
             Parent.AddPoints(user, username, points)
             to_send = ScriptSettings.found_letter_response.format(username, letter_or_word, points,
                                                                   ScriptSettings.currency_name)
-            Parent.SendStreamMessage(format_message(to_send, whisper=user))
+            send_message(to_send, whisper=user)
     else:
         Parent.AddPoints(user, username, ScriptSettings.finish_word_reward)
         to_send = ScriptSettings.found_correct_word_response.format(username, m_CurrentSolution,
                                                                     ScriptSettings.finish_word_reward,
                                                                     ScriptSettings.currency_name)
-        Parent.SendStreamMessage(format_message(to_send))
+        send_message(to_send)
 
 
-def format_message(to_send, whisper=None):
+def send_message(to_send, whisper=None):
     if ScriptSettings.whisper_guess_responses and whisper is not None:
-        to_send = '/w ' + whisper + " " + to_send
+        Parent.SendStreamWhisper(whisper, to_send)
     elif not ScriptSettings.not_show_me:
-        to_send = '/me ' + to_send
-    return to_send
+        Parent.SendStreamMessage('/me ' + to_send)
 
 
 def send_progress():
@@ -614,7 +613,7 @@ def send_progress():
         to_send = ScriptSettings.progress_response.format(m_CurrentWord)
         if ScriptSettings.end_after_x_turns:
             to_send = ScriptSettings.max_turns_prefix.format(m_turns, int(ScriptSettings.nb_turns)) + to_send
-        Parent.SendStreamMessage(format_message(to_send))
+        send_message(to_send)
 
 
 def process_command(data):
