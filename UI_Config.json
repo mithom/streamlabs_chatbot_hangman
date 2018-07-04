@@ -115,6 +115,13 @@
     "tooltip": "message sent as reaction on a guess will be whispered. Excluding end of game",
     "group": "config"
   },
+  "send_cd_response":{
+    "type": "checkbox",
+    "value": false,
+    "label": "tell remaining cd when !guess is on cooldown",
+    "tooltip": "when enabled, a message will be sent when someone tries to guess while it is on cooldown.",
+    "group": "config"
+  },
   "auto_start_game": {
     "type": "checkbox",
     "value": false,
@@ -279,6 +286,13 @@
     "tooltip": "shown when a game is started\n{0} : the guess command",
     "group": "responses"
   },
+  "cd_response": {
+    "type": "textbox",
+    "value": "{0}, {1} is on cooldown for {2} seconds",
+    "label": "cooldown response",
+    "tooltip": "shown when guess is made while on cooldown",
+    "group": "responses"
+  },
   "guess_word_addition": {
     "type": "textbox",
     "value": "and {0}",
@@ -402,8 +416,8 @@
   "next_word": {
     "type": "textbox",
     "value": "",
-    "label": "word for next game",
-    "tooltip": "leave this empty for a random word",
+    "label": "word for next game - SAVE SETTINGS BEFORE PRESSING BUTTON",
+    "tooltip": "leave this empty for a random word\nSAVE SETTINGS BEFORE PRESSING BUTTON",
     "group": "youtube compatibility"
   },
   "button_start": {

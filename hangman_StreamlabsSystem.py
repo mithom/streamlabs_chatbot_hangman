@@ -19,7 +19,7 @@ ScriptName = "Hangman"
 Website = "https://www.twitch.tv/mi_thom"
 Description = "INSERT API_KEY + (and wordnik apikey) play the hangman game in chat"
 Creator = "mi_thom"
-Version = "1.7.3"
+Version = "1.7.4"
 
 # ---------------------------------------
 #   Set Global Variables
@@ -69,6 +69,7 @@ class Settings(object):
             self.send_message_if_not_enough_points = True
             self.send_progress_after_guess = True
             self.whisper_guess_responses = False
+            self.send_cd_response = False
             self.auto_start_game = False
             self.auto_delay = 60
             self.only_online = True
@@ -100,6 +101,7 @@ class Settings(object):
             # responses
             self.in_progress_response = 'current game is still in progress'
             self.start_response = "a game of hangman has been started, start guessing now using {0} (letter)"
+            self.cd_response = "{0}, {1} is on cooldown for {2} seconds"
             self.guess_word_addition = " and {0}"
             self.turn_limit_response = 'the word has not been found within the turn limit, the solution was {0}'
             self.wrong_word_guess_response = '{0}, the word {1} is incorrect, better luck next time'
@@ -493,6 +495,10 @@ def add_cooldown(user):
     Parent.AddUserCooldown(ScriptName, "guess", user, ScriptSettings.user_cd)
 
 
+def get_cooldown(user):
+    return max(Parent.GetCooldownDuration(ScriptName, "guess"), Parent.GetUserCooldownDuration(ScriptName, "guess", user))
+
+
 def guess_word(user, word):
     global m_CurrentWord
     username = Parent.GetDisplayName(user)
@@ -517,6 +523,9 @@ def guess_word(user, word):
                 to_send = ScriptSettings.not_enough_points_response.format(
                     username, ScriptSettings.currency_name, ScriptSettings.guess_word_cost, current_user_points)
                 send_message(to_send, whisper=user)
+        elif ScriptSettings.send_cd_response:
+            to_send = ScriptSettings.cd_response.format(username, ScriptSettings.guess__word_command, get_cooldown(user))
+            send_message(to_send, whisper=user)
     else:
         to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
         send_message(to_send, whisper=user)
@@ -527,8 +536,8 @@ def guess_letter(user, letter):
         username = Parent.GetDisplayName(user)
         if m_GameRunning:
             if not is_on_cooldown(user):
+                add_cooldown(user)
                 if not (ScriptSettings.ignore_used and (letter in m_UsedLetters or letter in m_CurrentWord)):
-                    add_cooldown(user)
                     letter = letter.lower()
                     if letter in m_vowels:
                         cost = ScriptSettings.guess_vowel_cost
@@ -560,6 +569,9 @@ def guess_letter(user, letter):
                 elif ScriptSettings.ignore_used and ScriptSettings.send_response_if_ignored:
                     to_send = ScriptSettings.ignore_response.format(username, letter)
                     send_message(to_send, whisper=user)
+            elif ScriptSettings.send_cd_response:
+                to_send = ScriptSettings.cd_response.format(username, ScriptSettings.guess_command, get_cooldown(user))
+                send_message(to_send, whisper=user)
         else:
             to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
             send_message(to_send, whisper=user)
