@@ -411,7 +411,7 @@ def end_game():
     Parent.BroadcastWsEvent("EVENT_END_HANGMAN", "")
 
 
-def start_game_command(user, **kwargs):
+def start_game_command(user, username, **kwargs):
     global m_CurrentWord, m_CurrentSolution
     if kwargs.get('is_bot', False):
         user = 'auto_start'
@@ -424,9 +424,9 @@ def start_game_command(user, **kwargs):
                 word = kwargs["word"]
             else:
                 word = get_random_word()
-            if word is None:
+            if word is None and user != 'auto_start':
                 end_game()
-                Parent.SendStreamWhisper(user, "failed to retrieve a random word, check your connection & api-key")
+                send_message("failed to retrieve a random word, check your connection & api-key", whisper=user)
                 return
             m_CurrentSolution = word.lower().replace(" ", "-").replace("_", "-")
             m_CurrentWord = " ".join(["_" if x not in ScriptSettings.shown_letters else x for x in word])
@@ -437,7 +437,8 @@ def start_game_command(user, **kwargs):
             send_message(to_send)
             send_progress()
         else:
-            Parent.SendStreamWhisper(user, "current game still in progress")
+            if user != 'auto_start':
+                send_message("current game still in progress", whisper=user)
 
 
 def get_random_word():
@@ -468,11 +469,11 @@ def get_random_word_from_file(min_length, max_length):
             possibilities.remove(word)
 
 
-def guess_word_or_letter(user, word):
+def guess_word_or_letter(user, username, word):
     if len(word) == 1:
-        guess_letter(user, word)
+        guess_letter(user, username, word)
     else:
-        guess_word(user, word)
+        guess_word(user, username, word)
 
 
 def add_turn(letter=None):
@@ -499,9 +500,8 @@ def get_cooldown(user):
     return max(Parent.GetCooldownDuration(ScriptName, "guess"), Parent.GetUserCooldownDuration(ScriptName, "guess", user))
 
 
-def guess_word(user, word):
+def guess_word(user, username, word):
     global m_CurrentWord
-    username = Parent.GetDisplayName(user)
     if m_GameRunning:
         if not is_on_cooldown(user):
             add_cooldown(user)
@@ -509,7 +509,7 @@ def guess_word(user, word):
                 word = word.lower()
                 if word == m_CurrentSolution:
                     m_CurrentWord = ' '.join(m_CurrentSolution)
-                    reward(user, word)
+                    reward(user, username, word)
                     send_progress()
                     end_game()
                 else:
@@ -531,9 +531,8 @@ def guess_word(user, word):
         send_message(to_send, whisper=user)
 
 
-def guess_letter(user, letter):
+def guess_letter(user, username, letter):
     if len(letter) == 1:
-        username = Parent.GetDisplayName(user)
         if m_GameRunning:
             if not is_on_cooldown(user):
                 add_cooldown(user)
@@ -546,7 +545,7 @@ def guess_letter(user, letter):
                     if Parent.RemovePoints(user, username, cost):
                         if letter in m_CurrentSolution and letter not in m_CurrentWord:
                             fill_in_letter(letter)
-                            reward(user, letter)
+                            reward(user, username, letter)
                         else:
                             to_send = ScriptSettings.letter_not_in_word_response.format(username, letter, cost,
                                                                                         ScriptSettings.currency_name)
@@ -588,8 +587,7 @@ def is_finished():
     return "_" not in m_CurrentWord
 
 
-def reward(user, letter_or_word):
-    username = Parent.GetDisplayName(user)
+def reward(user, username, letter_or_word):
     if len(letter_or_word) == 1:
         if is_finished():
             Parent.AddPoints(user, username, ScriptSettings.finish_word_reward)
@@ -618,6 +616,8 @@ def send_message(to_send, whisper=None):
         Parent.SendStreamWhisper(whisper, to_send)
     elif not ScriptSettings.not_show_me:
         Parent.SendStreamMessage('/me ' + to_send)
+    else:
+        Parent.SendStreamMessage(to_send)
 
 
 def send_progress():
@@ -634,32 +634,38 @@ def process_command(data):
     if data.IsWhisper():
         if param1 == ScriptSettings.start_game_command:
             if p_count == 1:
-                start_game_command(data.User)
+                start_game_command(data.User, data.UserName)
             elif p_count == 2:
                 param2 = data.GetParam(1)
                 if param2.isdigit():
-                    start_game_command(data.User, length=int(param2))
+                    start_game_command(data.User, data.UserName, length=int(param2))
                 else:
-                    start_game_command(data.User, word=param2)
+                    start_game_command(data.User, data.UserName, word=param2)
+        elif param1 == ScriptSettings.guess_command and \
+                Parent.HasPermission(data.User, m_ModeratorPermission, ""):
+            param2 = data.GetParam(1)
+            param3 = data.GetParam(2)
+            username = Parent.GetDisplayName(param3)
+            guess_word_or_letter(param3, username, param2)
     elif data.IsChatMessage():
         if ScriptSettings.allow_chat_message:
             if param1 == ScriptSettings.start_game_command:
                 if p_count == 1:
-                    start_game_command(data.User)
+                    start_game_command(data.User, data.UserName)
                 elif p_count == 2:
                     param2 = data.GetParam(1)
                     if param2.isdigit():
-                        start_game_command(data.User, length=int(param2))
+                        start_game_command(data.User, data.UserName, length=int(param2))
         if p_count == 2:
             param2 = data.GetParam(1)
             if ScriptSettings.use_different_guess_command:
                 if param1 == ScriptSettings.guess_command:
-                    guess_letter(data.User, param2)
+                    guess_letter(data.User, data.UserName, param2)
                 elif param1 == ScriptSettings.guess_word_command:
-                    guess_word(data.User, param2)
+                    guess_word(data.User, data.UserName, param2)
             else:
                 if param1 == ScriptSettings.guess_command:
-                    guess_word_or_letter(data.User, param2)
+                    guess_word_or_letter(data.User, data.UserName, param2)
 
 
 # ---------------------------------------
@@ -679,12 +685,13 @@ def Execute(data):
 def StartHangmanButton():
     next_word = ScriptSettings.next_word
     user = Parent.GetChannelName()
+    username = Parent.GetDisplayName(user)
     if len(next_word) == 0:
-        start_game_command(user)
+        start_game_command(user, username)
     elif next_word.isdigit():
-        start_game_command(user, length=int(next_word))
+        start_game_command(user, username, length=int(next_word))
     else:
-        start_game_command(user, word=next_word)
+        start_game_command(user, username, word=next_word)
 
 
 # ---------------------------------------
@@ -696,7 +703,7 @@ def Tick():
         if (not m_GameRunning) and ScriptSettings.auto_start_game:
             if (time.clock() - m_LastGame) > ScriptSettings.auto_delay:
                 m_LastGame = time.clock()
-                start_game_command(None, is_bot=True)
+                start_game_command(None, None, is_bot=True)
 
 
 # ---------------------------------------

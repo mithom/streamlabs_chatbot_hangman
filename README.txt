@@ -107,3 +107,5 @@ v 1.0.2: support for mixer
 v 1.0.1: add max_word_length option
 
 v 1.0.0: made public
+
+-Basic- had an issue on mixer
