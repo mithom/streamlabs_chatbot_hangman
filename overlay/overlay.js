@@ -76,7 +76,7 @@ function init_sockets() {
     socket.onopen = function () {
         // Format your Auth info
         var auth = {
-            author: "mi_thom + mathiasAC",
+            author: "mi_thom",
             website: "https://www.twitch.tv/mi_thom",
             api_key: API_Key, //this is defined by right click insert api key
             events: [
