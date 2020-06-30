@@ -136,7 +136,6 @@ function init_sockets() {
         console.log("Connection closed")
     };
 }
-
 function showNextImage(data) {
     if("turn" in data){
         turn = data["turn"]
@@ -145,10 +144,11 @@ function showNextImage(data) {
     }
     var src;
     if(settings["nb_turns"] in imageOrder){
-        var show_nb = Math.min(settings["nb_turns"], turn)-1;
+        var activeImageSet = imageOrder[settings["nb_turns"]];
+        var show_nb = activeImageSet[Math.min(settings["nb_turns"], turn)-1];
         src ="hangman_images/" + show_nb + ".png"
     }else{
-        src = cutImages[turn-1];
+        src = cutImages[Math.min(settings["nb_turns"], turn)-1];
     }
     add_hangman_image(src);
 }
