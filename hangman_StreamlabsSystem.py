@@ -528,7 +528,7 @@ def guess_word(user, username, word):
                     username, ScriptSettings.currency_name, ScriptSettings.guess_word_cost, current_user_points)
                 send_message(to_send, whisper=user)
         elif ScriptSettings.send_cd_response:
-            to_send = ScriptSettings.cd_response.format(username, ScriptSettings.guess__word_command, get_cooldown(user))
+            to_send = ScriptSettings.cd_response.format(username, ScriptSettings.guess_word_command, get_cooldown(user))
             send_message(to_send, whisper=user)
     else:
         to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
