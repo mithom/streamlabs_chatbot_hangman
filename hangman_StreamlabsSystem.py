@@ -12,6 +12,9 @@ import urllib
 import time
 import random
 
+random = random.WichmannHill()
+random.seed() # set a random seed based on Os or time by not providing argument to seed
+
 # ---------------------------------------
 #   [Required]  Script Information
 # ---------------------------------------
