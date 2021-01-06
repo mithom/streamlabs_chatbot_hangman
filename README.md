@@ -70,6 +70,17 @@ streamers that are using this script:
 * [「RizakH」](https://www.twitch.tv/rizakh)
 
 ### changelog:
+v 1.7.6
+* fix overlay crash and wrong displaying images
+* fix randomness in chatbot
+* fix same word in same session again
+
+v 1.7.5
+* fix youtube
+* allow to mix api & file listed words
+* allow whispering answers
+* fix ASCII issues
+
 v 1.7.3: 
 * do not reset on ascii symbols
 * ability to mix file words with api words
