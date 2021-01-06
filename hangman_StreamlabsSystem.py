@@ -13,7 +13,7 @@ import time
 import random
 
 random = random.WichmannHill()
-random.seed() # set a random seed based on Os or time by not providing argument to seed
+random.seed()  # set a random seed based on Os or time by not providing argument to seed
 
 # ---------------------------------------
 #   [Required]  Script Information
@@ -467,6 +467,7 @@ def get_random_word_from_file(min_length, max_length):
     while len(possibilities) > 0:
         word = random.choice(possibilities)
         if max_length >= len(word) >= min_length:
+            m_random_words_from_file.remove(word)
             return word
         else:
             possibilities.remove(word)
