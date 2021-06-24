@@ -2,6 +2,7 @@ view a formatted version on
 https://github.com/mithom/streamlabs_chatbot_hangman
 
 # streamlabs_chatbot_hangman
+This code is meant for use as script in streamlabs chatbot. The cloud version currently does not support scripts. You do not run this code, but import it into the scripts tab from SL chatbot.
 if you like the script, you can always support me:
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/ThomasMichiels)
 
