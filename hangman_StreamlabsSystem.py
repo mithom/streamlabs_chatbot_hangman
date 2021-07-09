@@ -336,8 +336,9 @@ def load_random_words():
         if int(ScriptSettings.mix_api_file_word) != 100:
             with open(os.path.join(os.path.dirname(__file__), ScriptSettings.file_name), "r") as f:
                 m_random_words_from_file = [line.strip() for line in f if line.strip()]
-    except:
+    except Exception as err:
         m_random_words_from_file = ["failed-to-read-file", "failed-to-read", "failed"]
+        send_message("Unexpected error "+str(type(err)))
 
 
 # ---------------------------------------
@@ -579,10 +580,12 @@ def guess_letter(user, username, letter):
             to_send = ScriptSettings.no_game_running_response.format(username, ScriptSettings.start_game_command)
             send_message(to_send, whisper=user)
 
-
+def open(name, mode):
+	return codecs.open(name, mode, "utf8")
+    
 def fill_in_letter(letter):
     global m_CurrentWord
-    for m in re.finditer(letter, m_CurrentSolution):
+    for m in re.finditer("["+letter+"]", m_CurrentSolution):
         m_CurrentWord = m_CurrentWord[:m.start() * 2] + letter + m_CurrentWord[m.start() * 2 + 1:]
     save_game()
 
