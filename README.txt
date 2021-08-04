@@ -2,6 +2,8 @@ view a formatted version on
 https://github.com/mithom/streamlabs_chatbot_hangman
 
 # streamlabs_chatbot_hangman
+This code is meant for use as script in streamlabs chatbot. The cloud version currently does not support scripts. You do not run this code, but import it into the scripts tab from SL chatbot.
+
 if you like the script, you can always support me:
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/ThomasMichiels)
 
@@ -26,7 +28,7 @@ They will be kept in sync in real-time
 * overlay/overlay.html
 
 the overlay.html needs to be shown as a browser source (local file). For this to work you need to insert api key into
-the script by right clicking on it and selecting 'insert API_Key'. Mind! this is not the same api key as the wordnik
+the script by right clicking on it and selecting 'insert API_Key'. Mind! this is not the same api key as the wordnik 
 Api Key.
 
 ## Youtube compatibility mode
@@ -63,14 +65,29 @@ In addition you can fill in a word, number (or leave empty) in the settings, pre
 ## see it in action?
 streamers that are using this script:
 * [DaveBave](https://www.twitch.tv/davebave)
-* [-Kel- (mixer)](https://www.mixer.com/-kel-)
+* [-Kel- ](https://www.twitch.tv/Kelemvore)
 * [Billie_bob](https://www.twitch.tv/billie_bob)
 * [mrvideofreak](https://www.twitch.tv/mrvideofreak)
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 * [「RizakH」](https://www.twitch.tv/rizakh)
+* [WolfSaviour25](https://www.twitch.tv/wolfsaviour25)
 
 ### changelog:
-v 1.7.3:
+V 1.7.7
+* fix alpha setting for overlay color
+
+v 1.7.6
+* fix overlay crash and wrong displaying images
+* fix randomness in chatbot
+* fix same word in same session again
+
+v 1.7.5
+* fix youtube
+* allow to mix api & file listed words
+* allow whispering answers
+* fix ASCII issues
+
+v 1.7.3: 
 * do not reset on ascii symbols
 * ability to mix file words with api words
 
@@ -107,5 +124,3 @@ v 1.0.2: support for mixer
 v 1.0.1: add max_word_length option
 
 v 1.0.0: made public
-
--Basic- had an issue on mixer

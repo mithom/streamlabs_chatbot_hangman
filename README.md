@@ -73,6 +73,9 @@ streamers that are using this script:
 * [WolfSaviour25](https://www.twitch.tv/wolfsaviour25)
 
 ### changelog:
+V 1.7.7
+* fix alpha setting for overlay color
+
 v 1.7.6
 * fix overlay crash and wrong displaying images
 * fix randomness in chatbot
