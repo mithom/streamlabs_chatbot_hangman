@@ -73,6 +73,11 @@ streamers that are using this script:
 * [WolfSaviour25](https://www.twitch.tv/wolfsaviour25)
 
 ### changelog:
+V 1.7.8 - thanks to GooseFuse
+* Fix dots solving the whole word bug
+* Save and load text files as utf-8 for better international support
+* Log errors instead of silently ignoring them
+
 V 1.7.7
 * fix alpha setting for overlay color
 
