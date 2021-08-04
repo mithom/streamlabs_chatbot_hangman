@@ -65,11 +65,12 @@ In addition you can fill in a word, number (or leave empty) in the settings, pre
 ## see it in action?
 streamers that are using this script:
 * [DaveBave](https://www.twitch.tv/davebave)
-* [-Kel- (mixer)](https://www.mixer.com/-kel-)
+* [-Kel- ](https://www.twitch.tv/Kelemvore)
 * [Billie_bob](https://www.twitch.tv/billie_bob)
 * [mrvideofreak](https://www.twitch.tv/mrvideofreak)
 * [MathiasAC](https://www.twitch.tv/mathiasamazingchannel)
 * [「RizakH」](https://www.twitch.tv/rizakh)
+* [WolfSaviour25](https://www.twitch.tv/wolfsaviour25)
 
 ### changelog:
 v 1.7.6

@@ -52,6 +52,7 @@ function prepareImages() {
 						var r = rgba[0];
 						var g = rgba[1];
 						var b = rgba[2];
+						this.opacity(Math.round(rgba[3]*100));
 						this.fillColor(r, g, b);
 					});
 					this.render(function(){
@@ -166,6 +167,7 @@ function add_hangman_image(src) {
 				var r = rgba[0];
 				var g = rgba[1];
 				var b = rgba[2];
+				this.opacity(Math.round(rgba[3]*100));
 				this.fillColor(r, g, b);
 			});
 			this.render();
@@ -178,5 +180,5 @@ function add_hangman_image(src) {
 }
 
 function getRGBA() {
-    return settings["hangman_color"].slice(5, -1).split(',').map(x => parseInt(x));
+    return settings["hangman_color"].slice(5, -1).split(',').map(x => parseFloat(x));
 }
